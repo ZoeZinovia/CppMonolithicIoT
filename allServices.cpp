@@ -347,6 +347,9 @@ int main(int argc, char* argv[])
     // ------ LED code ------ //
 
     MQTTClient client_led;
+    MQTTClient_connectOptions conn_opts = MQTTClient_connectOptions_initializer;
+    conn_opts.keepAliveInterval = 20;
+    conn_opts.cleansession = 1;
     MQTTClient_create(&client_led, ADDRESS, CLIENTID_LED, MQTTCLIENT_PERSISTENCE_NONE, NULL);
 
     MQTTClient_setCallbacks(client_led, NULL, connlost, msgarrvd, delivered);
