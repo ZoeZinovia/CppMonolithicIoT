@@ -154,20 +154,21 @@ int* read_dht11_dat()
     dht11_dat[0] = dht11_dat[1] = dht11_dat[2] = dht11_dat[3] = dht11_dat[4] = 0;
 
     // pull pin down for 18 milliseconds. This is called “Start Signal” and it is to ensure DHT11 has detected the signal from MCU.
-    pinMode( 7, OUTPUT );
-    digitalWrite( 7, LOW );
+    pinMode( DHTPIN, OUTPUT );
+    digitalWrite( DHTPIN, LOW );
     delay( 18 );
     // Then MCU will pull up DATA pin for 40us to wait for DHT11’s response.
-    digitalWrite( 7, HIGH );
+    digitalWrite( DHTPIN, HIGH );
     delayMicroseconds( 40 );
     // Prepare to read the pin
-    pinMode( 7, INPUT );
+    pinMode( DHTPIN, INPUT );
 
+    std::cout << digitalRead( DHTPIN );
     // Detect change and read data
     for ( i = 0; i < MAXTIMINGS; i++ )
     {
         counter = 0;
-        while ( digitalRead( 7 ) == laststate )
+        while ( digitalRead( DHTPIN ) == laststate )
         {
             counter++;
             delayMicroseconds( 1 );
@@ -176,7 +177,7 @@ int* read_dht11_dat()
                 break;
             }
         }
-        laststate = digitalRead( 7 );
+        laststate = digitalRead( DHTPIN );
 
         if ( counter == 255 )
             break;
@@ -197,7 +198,6 @@ int* read_dht11_dat()
     {
         return dht11_dat; // If all ok, return pointer to the data array
     } else  {
-        std::cout << "PROblem\n";
         dht11_dat[0] = -1;
         return dht11_dat; //If there was an error, set first array element to -1 as flag to main function
     }
