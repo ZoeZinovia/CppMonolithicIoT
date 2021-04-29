@@ -212,10 +212,10 @@ int main(int argc, char *argv[]){
         }
         count = count + 1;
     }
-//
-//    // End of PIR loop. Stop MQTT and calculate runtime
-//    MQTTClient_disconnect(client_pir, 10000);
-//    MQTTClient_destroy(&client_pir);
+
+    // End of PIR loop. Stop MQTT and calculate runtime
+    MQTTClient_disconnect(client_pir, 10000);
+    MQTTClient_destroy(&client_pir);
     auto end_pir = high_resolution_clock::now();
     std::chrono::duration<double> timer = end_pir-start_pir;
     std::ofstream outfile;
