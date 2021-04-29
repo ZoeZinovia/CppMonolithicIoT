@@ -1,10 +1,6 @@
 ////
 //// Created by Shani du Plessis on 29/04/2021.
 ////
-//
-////
-// Created by Shani du Plessis on 20/04/2021.
-//
 
 extern "C" {
     #include <wiringPi.h>
@@ -364,10 +360,10 @@ int main(int argc, char* argv[])
         printf("Connected to led. Result code %d\n", rc);
     }
     MQTTClient_subscribe(client_led, TOPIC_LED, QOS);
-
-    while(session_status != "Done"){ // Continue listening for messages until end of session
-        //Do nothing
-    }
+//
+//    while(session_status != "Done"){ // Continue listening for messages until end of session
+//        //Do nothing
+//    }
 
     //MQTTClient_unsubscribe(client, TOPIC);
     MQTTClient_disconnect(client_pir, 10000);
