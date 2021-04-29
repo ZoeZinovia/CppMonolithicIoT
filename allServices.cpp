@@ -182,46 +182,46 @@ int main(int argc, char *argv[]){
     } else{
         printf("Connected. Result code %d\n", rc);
     }
-//
-//    pinMode(PIN_PIR, INPUT);
-//    bool motion = false;
-//    int count = 0;
-//    while(count <= 100) {
-//        if(count == 100){
-//            rapidjson::Document document_done;
-//            document_done.SetObject();
-//            rapidjson::Document::AllocatorType& allocator1 = document_done.GetAllocator();
-//            document_done.AddMember("Done", true, allocator1);
-//            std::string pub_message_done = json_to_string(document_done);
-//            rc = publish_message(pub_message_done, TOPIC_PIR, client_pir);
-//        }
-//        else {
-//            motion = digitalRead(PIN_PIR);
-//            //Create JSON DOM document object for humidity
-//            rapidjson::Document document_pir;
-//            document_pir.SetObject();
-//            rapidjson::Document::AllocatorType &allocator2 = document_pir.GetAllocator();
-//            document_pir.AddMember("PIR", motion, allocator2);
-//            try {
-//                std::string pub_message_pir = json_to_string(document_pir);
-//                rc = publish_message(pub_message_pir, TOPIC_PIR, client_pir);
-//            } catch (const std::exception &exc) {
-//                // catch anything thrown within try block that derives from std::exception
-//                std::cerr << exc.what();
-//            }
-//        }
-//        count = count + 1;
-//    }
+
+    pinMode(PIN_PIR, INPUT);
+    bool motion = false;
+    int count = 0;
+    while(count <= 100) {
+        if(count == 100){
+            rapidjson::Document document_done;
+            document_done.SetObject();
+            rapidjson::Document::AllocatorType& allocator1 = document_done.GetAllocator();
+            document_done.AddMember("Done", true, allocator1);
+            std::string pub_message_done = json_to_string(document_done);
+            rc = publish_message(pub_message_done, TOPIC_PIR, client_pir);
+        }
+        else {
+            motion = digitalRead(PIN_PIR);
+            //Create JSON DOM document object for humidity
+            rapidjson::Document document_pir;
+            document_pir.SetObject();
+            rapidjson::Document::AllocatorType &allocator2 = document_pir.GetAllocator();
+            document_pir.AddMember("PIR", motion, allocator2);
+            try {
+                std::string pub_message_pir = json_to_string(document_pir);
+                rc = publish_message(pub_message_pir, TOPIC_PIR, client_pir);
+            } catch (const std::exception &exc) {
+                // catch anything thrown within try block that derives from std::exception
+                std::cerr << exc.what();
+            }
+        }
+        count = count + 1;
+    }
 //
 //    // End of PIR loop. Stop MQTT and calculate runtime
 //    MQTTClient_disconnect(client_pir, 10000);
 //    MQTTClient_destroy(&client_pir);
-//    auto end_pir = high_resolution_clock::now();
-//    std::chrono::duration<double> timer = end_pir-start_pir;
-//    std::ofstream outfile;
-//    outfile.open("piResultsCppMono.txt", std::ios_base::app); // append to the results text file
-//    outfile << "PIR publisher runtime = " << timer.count() << "\n";
-//    std::cout << "PIR runtime = " << timer.count() << "\n";
+    auto end_pir = high_resolution_clock::now();
+    std::chrono::duration<double> timer = end_pir-start_pir;
+    std::ofstream outfile;
+    outfile.open("piResultsCppMono.txt", std::ios_base::app); // append to the results text file
+    outfile << "PIR publisher runtime = " << timer.count() << "\n";
+    std::cout << "PIR runtime = " << timer.count() << "\n";
 
     // ------ Temp and Humidity code ------ //
 
