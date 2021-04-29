@@ -487,6 +487,10 @@ int main(int argc, char* argv[])
     }
     MQTTClient_subscribe(client_led, TOPIC_LED, QOS);
 
+    while(session_status != "Done"){ // Continue listening for messages until end of session
+        //Do nothing
+    }
+
     //MQTTClient_unsubscribe(client, TOPIC);
     MQTTClient_disconnect(client_pir, 10000);
     MQTTClient_destroy(&client_pir);
