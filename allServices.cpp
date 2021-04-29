@@ -292,7 +292,9 @@ int main(int argc, char *argv[]){
 
     // ------ Temp and Humidity code ------ //
 
+    int rc;
     auto start_HT = high_resolution_clock::now(); // Starting timer
+    std::ofstream outfile;
 
     MQTTClient client_HT;
     MQTTClient_connectOptions conn_opts_HT = MQTTClient_connectOptions_initializer;
@@ -324,7 +326,7 @@ int main(int argc, char *argv[]){
     humidity = readings[0] + (readings[1]/10);
     temperature = readings[2] + (readings[3]/10);
 
-    count = 0;
+    int count = 0;
     while(count <= 100) {
         if(count == 100){
             rapidjson::Document document_done;
