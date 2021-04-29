@@ -412,14 +412,14 @@ int main(int argc, char* argv[])
 
     auto start_HT = high_resolution_clock::now(); // Starting timer
 
-    MQTTClient client;
+    MQTTClient client_ht;
     MQTTClient_connectOptions conn_opts = MQTTClient_connectOptions_initializer;
 
-    MQTTClient_create(&client, ADDRESS, CLIENTID_HT, MQTTCLIENT_PERSISTENCE_NONE, NULL);
+    MQTTClient_create(&client_ht, ADDRESS, CLIENTID_HT, MQTTCLIENT_PERSISTENCE_NONE, NULL);
     conn_opts.keepAliveInterval = 20;
     conn_opts.cleansession = 1;
 
-    if ((rc = MQTTClient_connect(client, &conn_opts)) != MQTTCLIENT_SUCCESS)
+    if ((rc = MQTTClient_connect(client_ht, &conn_opts)) != MQTTCLIENT_SUCCESS)
     {
         printf("Failed to connect, return code %d\n", rc);
         exit(EXIT_FAILURE);
