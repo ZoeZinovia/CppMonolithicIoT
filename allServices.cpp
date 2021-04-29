@@ -553,7 +553,6 @@ int main(int argc, char* argv[])
     // End of loop. Stop MQTT and calculate runtime
     auto end = high_resolution_clock::now();
     std::chrono::duration<double> timer = end-start;
-    std::ofstream outfile;
     outfile.open("piResultsCpp.txt", std::ios_base::app); // append to the results text file
     outfile << "Humidity and temperature publisher runtime = " << timer.count() << "\n";
     std::cout << "Humidity and temperature runtime = " << timer.count() << "\n";
