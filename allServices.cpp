@@ -48,8 +48,7 @@ auto start_led = high_resolution_clock::now(); // initialize start
 
 #define CLIENTID_PIR    "pir_client"
 #define TOPIC_PIR       "PIR"
-
-// Pi variables
+#define TIMEOUT     10000L
 #define PIN_PIR 17
 
 
@@ -173,7 +172,7 @@ int main(int argc, char *argv[]){
 
     MQTTClient client_pir;
     MQTTClient_connectOptions conn_opts = MQTTClient_connectOptions_initializer;
-    MQTTClient_create(&client_pir, ADDRESS, CLIENTID, MQTTCLIENT_PERSISTENCE_NONE, NULL);
+    MQTTClient_create(&client_pir, ADDRESS, CLIENTID_PIR, MQTTCLIENT_PERSISTENCE_NONE, NULL);
     conn_opts.keepAliveInterval = 20;
     conn_opts.cleansession = 1;
 
@@ -234,8 +233,8 @@ int main(int argc, char *argv[]){
 
     // Close LED MQTT connection
     //MQTTClient_unsubscribe(client, TOPIC);
-    MQTTClient_disconnect(client, 10000);
-    MQTTClient_destroy(&client);
+    MQTTClient_disconnect(client_led, 10000);
+    MQTTClient_destroy(&client_led);
     digitalWrite(pin_LED, 0);
     return rc;
 }
