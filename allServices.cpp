@@ -416,29 +416,6 @@ std::string json_to_string(const rapidjson::Document& doc){
 #define QOS         0
 #define TIMEOUT     10000L
 
-// RapidJson variables
-
-using namespace rapidjson;
-using namespace std::chrono;
-
-int publish_message(std::string str_message, const char *topic, MQTTClient client){
-    // Initializing components for MQTT publisher
-    MQTTClient_message pubmsg = MQTTClient_message_initializer;
-    MQTTClient_deliveryToken token;
-
-    // Updating values of pubmsg object
-    char *message = new char[str_message.length() + 1];
-    strcpy(message, str_message.c_str());
-    pubmsg.payload = message;
-    pubmsg.payloadlen = (int)std::strlen(message);
-    pubmsg.qos = QOS;
-    pubmsg.retained = 0;
-
-    MQTTClient_publishMessage(client, topic, &pubmsg, &token); // Publish the message
-    int rc = MQTTClient_waitForCompletion(client, token, TIMEOUT);
-    return rc;
-}
-
 // Reading of the dht11 is rather complex in C/C++. See this site that explains how readings are made: http://www.uugear.com/portfolio/dht11-humidity-temperature-sensor-module/
 int* read_dht11_dat()
 {
