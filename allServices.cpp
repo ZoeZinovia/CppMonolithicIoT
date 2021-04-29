@@ -231,83 +231,9 @@ std::string json_to_string(const rapidjson::Document& doc){
 //    outfile << "PIR publisher runtime = " << timer.count() << "\n";
 //    std::cout << "PIR runtime = " << timer.count() << "\n";
 //
-//    // ------ Temp and Humidity code ------ //
-//
-//    auto start_HT = high_resolution_clock::now(); // Starting timer
-//
-//    MQTTClient client_HT;
-//    MQTTClient_connectOptions conn_opts_HT = MQTTClient_connectOptions_initializer;
-//
-//    MQTTClient_create(&client_HT, ADDRESS, CLIENTID_H_T, MQTTCLIENT_PERSISTENCE_NONE, NULL);
-//    conn_opts_HT.keepAliveInterval = 20;
-//    conn_opts_HT.cleansession = 1;
-//
-//    if ((rc = MQTTClient_connect(client_HT, &conn_opts_HT)) != MQTTCLIENT_SUCCESS)
-//    {
-//        printf("Failed to connect, return code %d\n", rc);
-//        exit(EXIT_FAILURE);
-//    } else{
-//        printf("Connected. Result code %d\n", rc);
-//    }
-//
-//    double temperature = 0;
-//    double humidity = 0;
-//    int *readings = read_dht11_dat(); // function returns an array. Index 0 and 1 are for humidity, index 2 and 3 are for temp and index 4 is the checksum
-//    int counter = 0;
-//    while(readings[0] == -1 && counter < 8){
-//        readings = read_dht11_dat(); // Errors frequently occur when reading dht sensor. Keep reading until values are returned.
-//        counter = counter + 1;
-//    }
-//    if(counter == 8){
-//        std::cout << "Problem with DHT11 sensor. Check Raspberry Pi \n";
-//        return 1;
-//    }
-//    humidity = readings[0] + (readings[1]/10);
-//    temperature = readings[2] + (readings[3]/10);
-//
-//    count = 0;
-//    while(count <= 100) {
-//        if(count == 100){
-//            rapidjson::Document document_done;
-//            document_done.SetObject();
-//            rapidjson::Document::AllocatorType& allocator1 = document_done.GetAllocator();
-//            document_done.AddMember("Done", true, allocator1);
-//            std::string pub_message_done = json_to_string(document_done);
-//            rc = publish_message(pub_message_done, TOPIC_T, client_HT);
-//            rc = publish_message(pub_message_done, TOPIC_H, client_HT);
-//        }
-//        else {
-//            //Create JSON DOM document object for humidity
-//            rapidjson::Document document_humidity;
-//            document_humidity.SetObject();
-//            rapidjson::Document::AllocatorType &allocator2 = document_humidity.GetAllocator();
-//            document_humidity.AddMember("Humidity", humidity, allocator2);
-//            document_humidity.AddMember("Unit", "%", allocator2);
-//
-//            //Create JSON DOM document object for temperature
-//            rapidjson::Document document_temperature;
-//            document_temperature.SetObject();
-//            rapidjson::Document::AllocatorType &allocator3 = document_temperature.GetAllocator();
-//            document_temperature.AddMember("Temp", temperature, allocator3);
-//            document_temperature.AddMember("Unit", "C", allocator3);
-//            try {
-//                std::string pub_message_humidity = json_to_string(document_humidity);
-//                rc = publish_message(pub_message_humidity, TOPIC_H, client_HT);
-//                std::string pub_message_temperature = json_to_string(document_temperature);
-//                rc = publish_message(pub_message_temperature, TOPIC_T, client_HT);
-//            } catch (const std::exception &exc) {
-//                // catch anything thrown within try block that derives from std::exception
-//                std::cerr << exc.what();
-//            }
-//        }
-//        count = count + 1;
-//    }
-//
-//    auto end_HT = high_resolution_clock::now();
-//    std::chrono::duration<double> timer_HT = end_HT-start_HT;
-//    outfile.open("piResultsCppMono.txt", std::ios_base::app); // append to the results text file
-//    outfile << "Humidity and temperature publisher runtime = " << timer_HT.count() << "\n";
-//    std::cout << "Humidity and temperature runtime = " << timer_HT.count() << "\n";
+
+
+
 //
 //    while(session_status != "Done"){ // Continue listening for messages until end of session
 //        //Do nothing
@@ -417,7 +343,6 @@ int* read_dht11_dat()
 
 int main(int argc, char* argv[])
 {
-    auto start = high_resolution_clock::now(); // Starting timer
 
     std::string input = argv[1]; // IP address as command line argument to avoid hard coding
     input.append(":1883"); // Append MQTT port
@@ -484,6 +409,8 @@ int main(int argc, char* argv[])
     std::cout << "PIR runtime = " << timer_pir.count() << "\n";
 
     // Humidity temperature code
+
+    auto start_HT = high_resolution_clock::now(); // Starting timer
 
     MQTTClient client;
     MQTTClient_connectOptions conn_opts = MQTTClient_connectOptions_initializer;
@@ -553,14 +480,22 @@ int main(int argc, char* argv[])
     }
 
     // End of loop. Stop MQTT and calculate runtime
-    auto end = high_resolution_clock::now();
-    std::chrono::duration<double> timer = end-start;
+    auto end_HT = high_resolution_clock::now();
+    std::chrono::duration<double> timer_HT = end_HT-start_HT;
     outfile.open("piResultsCpp.txt", std::ios_base::app); // append to the results text file
-    outfile << "Humidity and temperature publisher runtime = " << timer.count() << "\n";
-    std::cout << "Humidity and temperature runtime = " << timer.count() << "\n";
+    outfile << "Humidity and temperature publisher runtime = " << timer_HT.count() << "\n";
+    std::cout << "Humidity and temperature runtime = " << timer_HT.count() << "\n";
 
-    MQTTClient_disconnect(client, 10000);
-    MQTTClient_destroy(&client);
+
+    //MQTTClient_unsubscribe(client, TOPIC);
+//    digitalWrite(pin_LED, 0);
+    MQTTClient_disconnect(client_pir, 10000);
+    MQTTClient_destroy(&client_pir);
+//    MQTTClient_disconnect(client_led, 10000);
+//    MQTTClient_destroy(&client_led);
+    MQTTClient_disconnect(client_HT, 10000);
+    MQTTClient_destroy(&client_HT);
+//    digitalWrite(pin_LED, 0);
 
     return rc;
 }
