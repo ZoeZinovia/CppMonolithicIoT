@@ -416,14 +416,6 @@ std::string json_to_string(const rapidjson::Document& doc){
 #define QOS         0
 #define TIMEOUT     10000L
 
-char* ADDRESS;
-
-// Pi dht11 variables
-#define MAXTIMINGS	85
-#define DHTPIN		7
-
-int dht11_dat[5] = { 0, 0, 0, 0, 0 }; //first 8bits is for humidity integral value, second 8bits for humidity decimal, third for temp integral, fourth for temperature decimal and last for checksum
-
 // RapidJson variables
 
 using namespace rapidjson;
@@ -445,15 +437,6 @@ int publish_message(std::string str_message, const char *topic, MQTTClient clien
     MQTTClient_publishMessage(client, topic, &pubmsg, &token); // Publish the message
     int rc = MQTTClient_waitForCompletion(client, token, TIMEOUT);
     return rc;
-}
-
-std::string json_to_string(const rapidjson::Document& doc){
-    //Serialize JSON to string for the message
-    rapidjson::StringBuffer string_buffer;
-    string_buffer.Clear();
-    rapidjson::PrettyWriter<rapidjson::StringBuffer> writer(string_buffer);
-    doc.Accept(writer);
-    return std::string(string_buffer.GetString());
 }
 
 // Reading of the dht11 is rather complex in C/C++. See this site that explains how readings are made: http://www.uugear.com/portfolio/dht11-humidity-temperature-sensor-module/
