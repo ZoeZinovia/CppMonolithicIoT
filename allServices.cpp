@@ -216,10 +216,10 @@ int main(int argc, char* argv[])
     auto start_pir = high_resolution_clock::now(); // Starting timer
 
     MQTTClient client_pir;
-    MQTTClient_connectOptions conn_opts_pir = MQTTClient_connectOptions_initializer;
+    MQTTClient_connectOptions conn_opts = MQTTClient_connectOptions_initializer;
     MQTTClient_create(&client_pir, ADDRESS, CLIENTID_PIR, MQTTCLIENT_PERSISTENCE_NONE, NULL);
-    conn_opts_pir.keepAliveInterval = 20;
-    conn_opts_pir.cleansession = 1;
+    conn_opts.keepAliveInterval = 20;
+    conn_opts.cleansession = 1;
 
     if ((rc = MQTTClient_connect(client_pir, &conn_opts_pir)) != MQTTCLIENT_SUCCESS){
         printf("Failed to connect, return code %d\n", rc);
