@@ -71,7 +71,7 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *m
         std::chrono::duration<double> timer = end_led-start_led;
         std::cout << "LED subscriber runtime = " << timer.count() << "\n";
         std::ofstream outfile;
-        outfile.open("piResultsCpp.txt", std::ios_base::app); // append to the results text file
+        outfile.open("piResultsCppMono.txt", std::ios_base::app); // append to the results text file
         outfile << "LED subscriber runtime = " << timer.count() << "\n";
         return 0;
     } else{
