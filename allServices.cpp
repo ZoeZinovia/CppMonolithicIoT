@@ -308,19 +308,19 @@ int main(int argc, char *argv[]){
         printf("Connected. Result code %d\n", rc);
     }
 
-    double temperature = 0;
-    double humidity = 0;
-    int *readings = read_dht11_dat(); // function returns an array. Index 0 and 1 are for humidity, index 2 and 3 are for temp and index 4 is the checksum
-    int counter = 0;
-    while(readings[0] == -1 && counter < 50){
-        readings = read_dht11_dat(); // Errors frequently occur when reading dht sensor. Keep reading until values are returned.
-    }
-    if(counter == 5){
-        std::cout << "Problem with DHT11 sensor. Check Raspberry Pi \n";
-        return 1;
-    }
-    humidity = readings[0] + (readings[1]/10);
-    temperature = readings[2] + (readings[3]/10);
+//    double temperature = 0;
+//    double humidity = 0;
+//    int *readings = read_dht11_dat(); // function returns an array. Index 0 and 1 are for humidity, index 2 and 3 are for temp and index 4 is the checksum
+//    int counter = 0;
+//    while(readings[0] == -1 && counter < 50){
+//        readings = read_dht11_dat(); // Errors frequently occur when reading dht sensor. Keep reading until values are returned.
+//    }
+//    if(counter == 5){
+//        std::cout << "Problem with DHT11 sensor. Check Raspberry Pi \n";
+//        return 1;
+//    }
+//    humidity = readings[0] + (readings[1]/10);
+//    temperature = readings[2] + (readings[3]/10);
 //
 //    count = 0;
 //    while(count <= 100) {
