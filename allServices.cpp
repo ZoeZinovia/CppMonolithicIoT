@@ -410,7 +410,7 @@ std::string json_to_string(const rapidjson::Document& doc){
 
 // MQTT variables
 
-#define CLIENTID    "hum_temp_client"
+#define CLIENTID_HT    "hum_temp_client"
 #define TOPIC_T       "Temperature"
 #define TOPIC_H       "Humidity"
 #define QOS         0
@@ -488,7 +488,7 @@ int main(int argc, char* argv[])
     MQTTClient_connectOptions conn_opts = MQTTClient_connectOptions_initializer;
     int rc;
 
-    MQTTClient_create(&client, ADDRESS, CLIENTID, MQTTCLIENT_PERSISTENCE_NONE, NULL);
+    MQTTClient_create(&client, ADDRESS, CLIENTID_HT, MQTTCLIENT_PERSISTENCE_NONE, NULL);
     conn_opts.keepAliveInterval = 20;
     conn_opts.cleansession = 1;
 
@@ -555,13 +555,15 @@ int main(int argc, char* argv[])
     }
 
     // End of loop. Stop MQTT and calculate runtime
-    MQTTClient_disconnect(client, 10000);
-    MQTTClient_destroy(&client);
     auto end = high_resolution_clock::now();
     std::chrono::duration<double> timer = end-start;
     std::ofstream outfile;
     outfile.open("piResultsCpp.txt", std::ios_base::app); // append to the results text file
     outfile << "Humidity and temperature publisher runtime = " << timer.count() << "\n";
     std::cout << "Humidity and temperature runtime = " << timer.count() << "\n";
+
+    MQTTClient_disconnect(client, 10000);
+    MQTTClient_destroy(&client);
+
     return rc;
 }
