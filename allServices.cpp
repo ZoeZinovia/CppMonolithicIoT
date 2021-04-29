@@ -258,22 +258,6 @@ std::string json_to_string(const rapidjson::Document& doc){
 //// Created by Shani du Plessis on 21/04/2021.
 ////
 
-//extern "C" {
-//#include <wiringPi.h>
-//#include <stdio.h>
-//#include <stdlib.h>
-//#include <string.h>
-//#include "MQTTClient.h"
-//}
-//#include <csignal>
-//#include <iostream>
-//#include "include/rapidjson/document.h"
-//#include "include/rapidjson/stringbuffer.h"
-//#include "include/rapidjson/prettywriter.h"
-//#include "include/rapidjson/writer.h"
-//#include <chrono>
-//#include <fstream>
-//#include <typeinfo>
 
 // MQTT variables
 
@@ -400,7 +384,7 @@ int main(int argc, char* argv[])
         count = count + 1;
     }
 
-    // End of PIR loop. Stop MQTT and calculate runtime
+    // End of PIR loop. Calculate runtime
     auto end_pir = high_resolution_clock::now();
     std::chrono::duration<double> timer_pir = end_pir-start_pir;
     std::ofstream outfile;
@@ -408,7 +392,7 @@ int main(int argc, char* argv[])
     outfile << "PIR publisher runtime = " << timer_pir.count() << "\n";
     std::cout << "PIR runtime = " << timer_pir.count() << "\n";
 
-    // Humidity temperature code
+    // ------ Humidity temperature code ------ //
 
     auto start_HT = high_resolution_clock::now(); // Starting timer
 
@@ -479,23 +463,38 @@ int main(int argc, char* argv[])
         count = count + 1;
     }
 
-    // End of loop. Stop MQTT and calculate runtime
+    // End of loop. Calculate runtime
     auto end_HT = high_resolution_clock::now();
     std::chrono::duration<double> timer_HT = end_HT-start_HT;
     outfile.open("piResultsCpp.txt", std::ios_base::app); // append to the results text file
     outfile << "Humidity and temperature publisher runtime = " << timer_HT.count() << "\n";
     std::cout << "Humidity and temperature runtime = " << timer_HT.count() << "\n";
 
+    // ------ LED code ------ //
+
+    MQTTClient client_led;
+    MQTTClient_create(&client_led, ADDRESS, CLIENTID_LED, MQTTCLIENT_PERSISTENCE_NONE, NULL);
+
+    MQTTClient_setCallbacks(client_led, NULL, connlost, msgarrvd, delivered);
+
+    if ((rc = MQTTClient_connect(client_led, &conn_opts)) != MQTTCLIENT_SUCCESS) //Unsuccessful connection
+    {
+        printf("Failed to connect, return code %d\n", rc);
+        exit(EXIT_FAILURE);
+    }
+    else{ // Successful connection
+        printf("Connected. Result code %d\n", rc);
+    }
+    MQTTClient_subscribe(client_led, TOPIC_LED, QOS);
 
     //MQTTClient_unsubscribe(client, TOPIC);
-//    digitalWrite(pin_LED, 0);
     MQTTClient_disconnect(client_pir, 10000);
     MQTTClient_destroy(&client_pir);
-//    MQTTClient_disconnect(client_led, 10000);
-//    MQTTClient_destroy(&client_led);
+    MQTTClient_disconnect(client_led, 10000);
+    MQTTClient_destroy(&client_led);
     MQTTClient_disconnect(client_ht, 10000);
     MQTTClient_destroy(&client_ht);
-//    digitalWrite(pin_LED, 0);
+    digitalWrite(pin_LED, 0);
 
     return rc;
 }
