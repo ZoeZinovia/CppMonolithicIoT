@@ -101,7 +101,6 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *m
             pin_LED = document["GPIO"].GetInt();
             pinMode(pin_LED, OUTPUT);
             digitalWrite(pin_LED, led_status);
-            std::cout << pin_LED << "turned to " << led_status << "\n";
         }
         MQTTClient_freeMessage(&message);
         MQTTClient_free(topicName);
@@ -346,6 +345,8 @@ int main(int argc, char* argv[])
 //    std::cout << "Humidity and temperature runtime = " << timer_HT.count() << "\n";
 
     // ------ LED code ------ //
+
+    wiringPiSetup();
 
     MQTTClient client_led;
     MQTTClient_connectOptions conn_opts = MQTTClient_connectOptions_initializer;
