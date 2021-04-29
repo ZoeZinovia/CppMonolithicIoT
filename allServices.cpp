@@ -197,7 +197,7 @@ int* read_dht11_dat()
     {
         return dht11_dat; // If all ok, return pointer to the data array
     } else  {
-        std::cout << "Problem!!\n"
+        std::cout << "Problem!!\n";
         dht11_dat[0] = -1;
         return dht11_dat; //If there was an error, set first array element to -1 as flag to main function
     }
