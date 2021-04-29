@@ -54,7 +54,7 @@ auto start_led = high_resolution_clock::now(); // initialize start
 
 // Humidity and Temperature variables
 
-#define CLIENTID_HT    "hum_temp_client"
+#define CLIENTID_HT   "hum_temp_client"
 #define TOPIC_T       "Temperature"
 #define TOPIC_H       "Humidity"
 
@@ -229,7 +229,7 @@ int main(int argc, char* argv[])
         printf("Failed to connect, return code %d\n", rc);
         exit(EXIT_FAILURE);
     } else{
-        printf("Connected. Result code %d\n", rc);
+        printf("Connected to PIR. Result code %d\n", rc);
     }
 
     pinMode(PIN_PIR, INPUT);
@@ -286,7 +286,7 @@ int main(int argc, char* argv[])
         printf("Failed to connect, return code %d\n", rc);
         exit(EXIT_FAILURE);
     } else{
-        printf("Connected. Result code %d\n", rc);
+        printf("Connected to humidity and temperature. Result code %d\n", rc);
     }
 
     double temperature = 0;
@@ -361,7 +361,7 @@ int main(int argc, char* argv[])
         exit(EXIT_FAILURE);
     }
     else{ // Successful connection
-        printf("Connected. Result code %d\n", rc);
+        printf("Connected to led. Result code %d\n", rc);
     }
     MQTTClient_subscribe(client_led, TOPIC_LED, QOS);
 
