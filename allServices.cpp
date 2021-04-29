@@ -426,6 +426,8 @@ int main(int argc, char* argv[])
     ADDRESS = char_input;
     int rc;
 
+    wiringPiSetup(); // Required for wiringPi
+
     // ------ PIR code ----- //
 
     auto start_pir = high_resolution_clock::now(); // Starting timer
@@ -481,6 +483,8 @@ int main(int argc, char* argv[])
     outfile << "PIR publisher runtime = " << timer_pir.count() << "\n";
     std::cout << "PIR runtime = " << timer_pir.count() << "\n";
 
+    // Humidity temperature code
+
     MQTTClient client;
     MQTTClient_connectOptions conn_opts = MQTTClient_connectOptions_initializer;
 
@@ -495,8 +499,6 @@ int main(int argc, char* argv[])
     } else{
         printf("Connected. Result code %d\n", rc);
     }
-
-    wiringPiSetup(); // Required for wiringPi
 
     double temperature = 0;
     double humidity = 0;
