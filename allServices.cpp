@@ -16,8 +16,12 @@ extern "C" {
 #include <csignal>
 #include <iostream>
 #include "include/rapidjson/document.h"
+#include "include/rapidjson/stringbuffer.h"
+#include "include/rapidjson/prettywriter.h"
+#include "include/rapidjson/writer.h"
 #include <chrono>
 #include <fstream>
+
 
 //using namespace std;
 using namespace rapidjson;
@@ -40,6 +44,16 @@ std::string session_status;
 int num_messages = 0;
 auto start_led = high_resolution_clock::now(); // initialize start
 
+// PIR variables
+
+#define CLIENTID_PIR    "pir_client"
+#define TOPIC_PIR       "PIR"
+
+// Pi variables
+#define PIN_PIR 17
+
+
+// ------ LED code ------ //
 void delivered(void *context, MQTTClient_deliveryToken dt) // Required callback
 {
     printf("Message with token value %d delivery confirmed\n", dt);
@@ -93,6 +107,34 @@ void connlost(void *context, char *cause) // Required callback for lost connecti
     printf("     cause: %s\n", cause);
 }
 
+int publish_message(std::string str_message, const char *topic, MQTTClient client){
+    // Initializing components for MQTT publisher
+    MQTTClient_message pubmsg = MQTTClient_message_initializer;
+    MQTTClient_deliveryToken token;
+
+    // Updating values of pubmsg object
+    char *message = new char[str_message.length() + 1];
+    strcpy(message, str_message.c_str());
+    pubmsg.payload = message;
+    pubmsg.payloadlen = (int)std::strlen(message);
+    pubmsg.qos = QOS;
+    pubmsg.retained = 0;
+
+    MQTTClient_publishMessage(client, topic, &pubmsg, &token); // Publish the message
+    int rc = MQTTClient_waitForCompletion(client, token, TIMEOUT);
+    return rc;
+}
+
+std::string json_to_string(const rapidjson::Document& doc){
+    //Serialize JSON to string for the message
+    rapidjson::StringBuffer string_buffer;
+    string_buffer.Clear();
+    rapidjson::PrettyWriter<rapidjson::StringBuffer> writer(string_buffer);
+    doc.Accept(writer);
+    return std::string(string_buffer.GetString());
+}
+
+
 int main(int argc, char *argv[]){
 
     // Saving IP address for all programs
@@ -104,18 +146,18 @@ int main(int argc, char *argv[]){
 
     wiringPiSetupGpio();
 
-    // MQTT setup for LED
-    MQTTClient client;
-    MQTTClient_connectOptions conn_opts = MQTTClient_connectOptions_initializer;
+    // ------ LED code ------ //
+
+    MQTTClient client_led;
+    MQTTClient_connectOptions conn_opts_led = MQTTClient_connectOptions_initializer;
     int rc;
+    MQTTClient_create(&client_led, ADDRESS, CLIENTID_LED, MQTTCLIENT_PERSISTENCE_NONE, NULL);
+    conn_opts_led.keepAliveInterval = 20;
+    conn_opts_led.cleansession = 1;
 
-    MQTTClient_create(&client, ADDRESS, CLIENTID_LED, MQTTCLIENT_PERSISTENCE_NONE, NULL);
-    conn_opts.keepAliveInterval = 20;
-    conn_opts.cleansession = 1;
+    MQTTClient_setCallbacks(client_led, NULL, connlost, msgarrvd, delivered);
 
-    MQTTClient_setCallbacks(client, NULL, connlost, msgarrvd, delivered);
-
-    if ((rc = MQTTClient_connect(client, &conn_opts)) != MQTTCLIENT_SUCCESS) //Unsuccessful connection
+    if ((rc = MQTTClient_connect(client_led, &conn_opts_led)) != MQTTCLIENT_SUCCESS) //Unsuccessful connection
     {
         printf("Failed to connect, return code %d\n", rc);
         exit(EXIT_FAILURE);
@@ -123,7 +165,66 @@ int main(int argc, char *argv[]){
     else{ // Successful connection
         printf("Connected. Result code %d\n", rc);
     }
-    MQTTClient_subscribe(client, TOPIC_LED, QOS);
+    MQTTClient_subscribe(client_led, TOPIC_LED, QOS);
+
+    // ------ PIR code ----- //
+
+    auto start_pir = high_resolution_clock::now(); // Starting timer
+
+    MQTTClient client_pir;
+    MQTTClient_connectOptions conn_opts = MQTTClient_connectOptions_initializer;
+    MQTTClient_create(&client_pir, ADDRESS, CLIENTID, MQTTCLIENT_PERSISTENCE_NONE, NULL);
+    conn_opts.keepAliveInterval = 20;
+    conn_opts.cleansession = 1;
+
+    if ((rc = MQTTClient_connect(client_pir, &conn_opts)) != MQTTCLIENT_SUCCESS){
+        printf("Failed to connect, return code %d\n", rc);
+        exit(EXIT_FAILURE);
+    } else{
+        printf("Connected. Result code %d\n", rc);
+    }
+
+    pinMode(PIN_PIR, INPUT);
+    bool motion = false;
+    int count = 0;
+    while(count <= 100) {
+        if(count == 100){
+            rapidjson::Document document_done;
+            document_done.SetObject();
+            rapidjson::Document::AllocatorType& allocator1 = document_done.GetAllocator();
+            document_done.AddMember("Done", true, allocator1);
+            std::string pub_message_done = json_to_string(document_done);
+            rc = publish_message(pub_message_done, TOPIC_PIR, client_pir);
+        }
+        else {
+            motion = digitalRead(PIN_PIR);
+            //Create JSON DOM document object for humidity
+            rapidjson::Document document_pir;
+            document_pir.SetObject();
+            rapidjson::Document::AllocatorType &allocator2 = document_pir.GetAllocator();
+            document_pir.AddMember("PIR", motion, allocator2);
+            try {
+                std::string pub_message_pir = json_to_string(document_pir);
+                rc = publish_message(pub_message_pir, TOPIC_PIR, client_pir);
+            } catch (const std::exception &exc) {
+                // catch anything thrown within try block that derives from std::exception
+                std::cerr << exc.what();
+            }
+        }
+        count = count + 1;
+    }
+
+    // End of PIR loop. Stop MQTT and calculate runtime
+    MQTTClient_disconnect(client_pir, 10000);
+    MQTTClient_destroy(&client_pir);
+    auto end_pir = high_resolution_clock::now();
+    std::chrono::duration<double> timer = end_pir-start_pir;
+    std::ofstream outfile;
+    outfile.open("piResultsCppMono.txt", std::ios_base::app); // append to the results text file
+    outfile << "PIR publisher runtime = " << timer.count() << "\n";
+    std::cout << "PIR runtime = " << timer.count() << "\n";
+
+    // ------ Temp and Humidity code ------ //
 
 
 
