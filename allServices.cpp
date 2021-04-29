@@ -449,8 +449,8 @@ int main(int argc, char* argv[])
             rapidjson::Document::AllocatorType& allocator1 = document_done.GetAllocator();
             document_done.AddMember("Done", true, allocator1);
             std::string pub_message_done = json_to_string(document_done);
-            rc = publish_message(pub_message_done, TOPIC_T, client);
-            rc = publish_message(pub_message_done, TOPIC_H, client);
+            rc = publish_message(pub_message_done, TOPIC_T, client_ht);
+            rc = publish_message(pub_message_done, TOPIC_H, client_ht);
         }
         else {
             //Create JSON DOM document object for humidity
@@ -468,9 +468,9 @@ int main(int argc, char* argv[])
             document_temperature.AddMember("Unit", "C", allocator3);
             try {
                 std::string pub_message_humidity = json_to_string(document_humidity);
-                rc = publish_message(pub_message_humidity, TOPIC_H, client);
+                rc = publish_message(pub_message_humidity, TOPIC_H, client_ht);
                 std::string pub_message_temperature = json_to_string(document_temperature);
-                rc = publish_message(pub_message_temperature, TOPIC_T, client);
+                rc = publish_message(pub_message_temperature, TOPIC_T, client_ht);
             } catch (const std::exception &exc) {
                 // catch anything thrown within try block that derives from std::exception
                 std::cerr << exc.what();
@@ -493,8 +493,8 @@ int main(int argc, char* argv[])
     MQTTClient_destroy(&client_pir);
 //    MQTTClient_disconnect(client_led, 10000);
 //    MQTTClient_destroy(&client_led);
-    MQTTClient_disconnect(client_HT, 10000);
-    MQTTClient_destroy(&client_HT);
+    MQTTClient_disconnect(client_ht, 10000);
+    MQTTClient_destroy(&client_ht);
 //    digitalWrite(pin_LED, 0);
 
     return rc;
