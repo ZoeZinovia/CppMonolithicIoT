@@ -165,23 +165,23 @@ int main(int argc, char *argv[]){
         printf("Connected. Result code %d\n", rc);
     }
     MQTTClient_subscribe(client_led, TOPIC_LED, QOS);
-//
-//    // ------ PIR code ----- //
-//
-//    auto start_pir = high_resolution_clock::now(); // Starting timer
-//
-//    MQTTClient client_pir;
-//    MQTTClient_connectOptions conn_opts = MQTTClient_connectOptions_initializer;
-//    MQTTClient_create(&client_pir, ADDRESS, CLIENTID_PIR, MQTTCLIENT_PERSISTENCE_NONE, NULL);
-//    conn_opts.keepAliveInterval = 20;
-//    conn_opts.cleansession = 1;
-//
-//    if ((rc = MQTTClient_connect(client_pir, &conn_opts)) != MQTTCLIENT_SUCCESS){
-//        printf("Failed to connect, return code %d\n", rc);
-//        exit(EXIT_FAILURE);
-//    } else{
-//        printf("Connected. Result code %d\n", rc);
-//    }
+
+    // ------ PIR code ----- //
+
+    auto start_pir = high_resolution_clock::now(); // Starting timer
+
+    MQTTClient client_pir;
+    MQTTClient_connectOptions conn_opts = MQTTClient_connectOptions_initializer;
+    MQTTClient_create(&client_pir, ADDRESS, CLIENTID_PIR, MQTTCLIENT_PERSISTENCE_NONE, NULL);
+    conn_opts.keepAliveInterval = 20;
+    conn_opts.cleansession = 1;
+
+    if ((rc = MQTTClient_connect(client_pir, &conn_opts)) != MQTTCLIENT_SUCCESS){
+        printf("Failed to connect, return code %d\n", rc);
+        exit(EXIT_FAILURE);
+    } else{
+        printf("Connected. Result code %d\n", rc);
+    }
 //
 //    pinMode(PIN_PIR, INPUT);
 //    bool motion = false;
