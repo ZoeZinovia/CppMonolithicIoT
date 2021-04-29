@@ -475,11 +475,11 @@ int main(int argc, char* argv[])
 
     // End of PIR loop. Stop MQTT and calculate runtime
     auto end_pir = high_resolution_clock::now();
-    std::chrono::duration<double> timer = end_pir-start_pir;
+    std::chrono::duration<double> timer_pir = end_pir-start_pir;
     std::ofstream outfile;
     outfile.open("piResultsCppMono.txt", std::ios_base::app); // append to the results text file
-    outfile << "PIR publisher runtime = " << timer.count() << "\n";
-    std::cout << "PIR runtime = " << timer.count() << "\n";
+    outfile << "PIR publisher runtime = " << timer_pir.count() << "\n";
+    std::cout << "PIR runtime = " << timer_pir.count() << "\n";
 
     MQTTClient client;
     MQTTClient_connectOptions conn_opts = MQTTClient_connectOptions_initializer;
@@ -512,7 +512,7 @@ int main(int argc, char* argv[])
     humidity = readings[0] + (readings[1]/10);
     temperature = readings[2] + (readings[3]/10);
 
-    int count = 0;
+    count = 0;
     while(count <= 100) {
         if(count == 100){
             rapidjson::Document document_done;
