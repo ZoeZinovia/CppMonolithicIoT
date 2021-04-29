@@ -211,60 +211,60 @@ int main(int argc, char* argv[])
 
     wiringPiSetup(); // Required for wiringPi
 
-    // ------ PIR code ----- //
-
-    auto start_pir = high_resolution_clock::now(); // Starting timer
-
-    MQTTClient client_pir;
-    MQTTClient_connectOptions conn_opts_pir = MQTTClient_connectOptions_initializer;
-    MQTTClient_create(&client_pir, ADDRESS, CLIENTID_PIR, MQTTCLIENT_PERSISTENCE_NONE, NULL);
-    conn_opts_pir.keepAliveInterval = 20;
-    conn_opts_pir.cleansession = 1;
-
-    if ((rc = MQTTClient_connect(client_pir, &conn_opts_pir)) != MQTTCLIENT_SUCCESS){
-        printf("Failed to connect, return code %d\n", rc);
-        exit(EXIT_FAILURE);
-    } else{
-        printf("Connected to PIR. Result code %d\n", rc);
-    }
-
-    pinMode(PIN_PIR, INPUT);
-    bool motion = false;
-    int count = 0;
-    while(count <= 100) {
-        if(count == 100){
-            rapidjson::Document document_done;
-            document_done.SetObject();
-            rapidjson::Document::AllocatorType& allocator1 = document_done.GetAllocator();
-            document_done.AddMember("Done", true, allocator1);
-            std::string pub_message_done = json_to_string(document_done);
-            rc = publish_message(pub_message_done, TOPIC_PIR, client_pir);
-        }
-        else {
-            motion = digitalRead(PIN_PIR);
-            //Create JSON DOM document object for humidity
-            rapidjson::Document document_pir;
-            document_pir.SetObject();
-            rapidjson::Document::AllocatorType &allocator2 = document_pir.GetAllocator();
-            document_pir.AddMember("PIR", motion, allocator2);
-            try {
-                std::string pub_message_pir = json_to_string(document_pir);
-                rc = publish_message(pub_message_pir, TOPIC_PIR, client_pir);
-            } catch (const std::exception &exc) {
-                // catch anything thrown within try block that derives from std::exception
-                std::cerr << exc.what();
-            }
-        }
-        count = count + 1;
-    }
-
-    // End of PIR loop. Calculate runtime
-    auto end_pir = high_resolution_clock::now();
-    std::chrono::duration<double> timer_pir = end_pir-start_pir;
-    std::ofstream outfile;
-    outfile.open("piResultsCppMono.txt", std::ios_base::app); // append to the results text file
-    outfile << "PIR publisher runtime = " << timer_pir.count() << "\n";
-    std::cout << "PIR runtime = " << timer_pir.count() << "\n";
+//    // ------ PIR code ----- //
+//
+//    auto start_pir = high_resolution_clock::now(); // Starting timer
+//
+//    MQTTClient client_pir;
+//    MQTTClient_connectOptions conn_opts_pir = MQTTClient_connectOptions_initializer;
+//    MQTTClient_create(&client_pir, ADDRESS, CLIENTID_PIR, MQTTCLIENT_PERSISTENCE_NONE, NULL);
+//    conn_opts_pir.keepAliveInterval = 20;
+//    conn_opts_pir.cleansession = 1;
+//
+//    if ((rc = MQTTClient_connect(client_pir, &conn_opts_pir)) != MQTTCLIENT_SUCCESS){
+//        printf("Failed to connect, return code %d\n", rc);
+//        exit(EXIT_FAILURE);
+//    } else{
+//        printf("Connected to PIR. Result code %d\n", rc);
+//    }
+//
+//    pinMode(PIN_PIR, INPUT);
+//    bool motion = false;
+//    int count = 0;
+//    while(count <= 100) {
+//        if(count == 100){
+//            rapidjson::Document document_done;
+//            document_done.SetObject();
+//            rapidjson::Document::AllocatorType& allocator1 = document_done.GetAllocator();
+//            document_done.AddMember("Done", true, allocator1);
+//            std::string pub_message_done = json_to_string(document_done);
+//            rc = publish_message(pub_message_done, TOPIC_PIR, client_pir);
+//        }
+//        else {
+//            motion = digitalRead(PIN_PIR);
+//            //Create JSON DOM document object for humidity
+//            rapidjson::Document document_pir;
+//            document_pir.SetObject();
+//            rapidjson::Document::AllocatorType &allocator2 = document_pir.GetAllocator();
+//            document_pir.AddMember("PIR", motion, allocator2);
+//            try {
+//                std::string pub_message_pir = json_to_string(document_pir);
+//                rc = publish_message(pub_message_pir, TOPIC_PIR, client_pir);
+//            } catch (const std::exception &exc) {
+//                // catch anything thrown within try block that derives from std::exception
+//                std::cerr << exc.what();
+//            }
+//        }
+//        count = count + 1;
+//    }
+//
+//    // End of PIR loop. Calculate runtime
+//    auto end_pir = high_resolution_clock::now();
+//    std::chrono::duration<double> timer_pir = end_pir-start_pir;
+//    std::ofstream outfile;
+//    outfile.open("piResultsCppMono.txt", std::ios_base::app); // append to the results text file
+//    outfile << "PIR publisher runtime = " << timer_pir.count() << "\n";
+//    std::cout << "PIR runtime = " << timer_pir.count() << "\n";
 
 //    // ------ Humidity temperature code ------ //
 //
@@ -369,8 +369,8 @@ int main(int argc, char* argv[])
     }
 
     //MQTTClient_unsubscribe(client, TOPIC);
-    MQTTClient_disconnect(client_pir, 10000);
-    MQTTClient_destroy(&client_pir);
+//    MQTTClient_disconnect(client_pir, 10000);
+//    MQTTClient_destroy(&client_pir);
     MQTTClient_disconnect(client_led, 10000);
     MQTTClient_destroy(&client_led);
 //    MQTTClient_disconnect(client_ht, 10000);
