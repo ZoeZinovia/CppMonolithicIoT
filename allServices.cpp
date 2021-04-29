@@ -373,6 +373,7 @@ int main(int argc, char *argv[]){
     // Close all MQTT connection
 
     //MQTTClient_unsubscribe(client, TOPIC);
+    digitalWrite(pin_LED, 0);
     MQTTClient_disconnect(client_pir, 10000);
     MQTTClient_destroy(&client_pir);
     MQTTClient_disconnect(client_led, 10000);
