@@ -344,22 +344,22 @@ int main(int argc, char* argv[])
     outfile << "Humidity and temperature publisher runtime = " << timer_HT.count() << "\n";
     std::cout << "Humidity and temperature runtime = " << timer_HT.count() << "\n";
 
-    // ------ LED code ------ //
-
-    MQTTClient client_led;
-    MQTTClient_create(&client_led, ADDRESS, CLIENTID_LED, MQTTCLIENT_PERSISTENCE_NONE, NULL);
-
-    MQTTClient_setCallbacks(client_led, NULL, connlost, msgarrvd, delivered);
-
-    if ((rc = MQTTClient_connect(client_led, &conn_opts)) != MQTTCLIENT_SUCCESS) //Unsuccessful connection
-    {
-        printf("Failed to connect, return code %d\n", rc);
-        exit(EXIT_FAILURE);
-    }
-    else{ // Successful connection
-        printf("Connected to led. Result code %d\n", rc);
-    }
-    MQTTClient_subscribe(client_led, TOPIC_LED, QOS);
+//    // ------ LED code ------ //
+//
+//    MQTTClient client_led;
+//    MQTTClient_create(&client_led, ADDRESS, CLIENTID_LED, MQTTCLIENT_PERSISTENCE_NONE, NULL);
+//
+//    MQTTClient_setCallbacks(client_led, NULL, connlost, msgarrvd, delivered);
+//
+//    if ((rc = MQTTClient_connect(client_led, &conn_opts)) != MQTTCLIENT_SUCCESS) //Unsuccessful connection
+//    {
+//        printf("Failed to connect, return code %d\n", rc);
+//        exit(EXIT_FAILURE);
+//    }
+//    else{ // Successful connection
+//        printf("Connected to led. Result code %d\n", rc);
+//    }
+//    MQTTClient_subscribe(client_led, TOPIC_LED, QOS);
 //
 //    while(session_status != "Done"){ // Continue listening for messages until end of session
 //        //Do nothing
@@ -368,11 +368,11 @@ int main(int argc, char* argv[])
     //MQTTClient_unsubscribe(client, TOPIC);
     MQTTClient_disconnect(client_pir, 10000);
     MQTTClient_destroy(&client_pir);
-    MQTTClient_disconnect(client_led, 10000);
-    MQTTClient_destroy(&client_led);
+//    MQTTClient_disconnect(client_led, 10000);
+//    MQTTClient_destroy(&client_led);
     MQTTClient_disconnect(client_ht, 10000);
     MQTTClient_destroy(&client_ht);
-    digitalWrite(pin_LED, 0);
+//    digitalWrite(pin_LED, 0);
 
     return rc;
 }
