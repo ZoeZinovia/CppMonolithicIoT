@@ -143,66 +143,7 @@ std::string json_to_string(const rapidjson::Document& doc){
     doc.Accept(writer);
     return std::string(string_buffer.GetString());
 }
-//
-//// Reading of the dht11 is rather complex in C/C++. See this site that explains how readings are made: http://www.uugear.com/portfolio/dht11-humidity-temperature-sensor-module/
-//int* read_dht11_dat()
-//{
-//    uint8_t laststate	= HIGH;
-//    uint8_t counter		= 0;
-//    uint8_t j	    	= 0, i;
-//
-//    dht11_dat[0] = dht11_dat[1] = dht11_dat[2] = dht11_dat[3] = dht11_dat[4] = 0;
-//
-//    // pull pin down for 18 milliseconds. This is called “Start Signal” and it is to ensure DHT11 has detected the signal from MCU.
-//    pinMode( DHTPIN, OUTPUT );
-//    digitalWrite( DHTPIN, LOW );
-//    delay( 18 );
-//    // Then MCU will pull up DATA pin for 40us to wait for DHT11’s response.
-//    digitalWrite( DHTPIN, HIGH );
-//    delayMicroseconds( 40 );
-//    // Prepare to read the pin
-//    pinMode( DHTPIN, INPUT );
-//
-//    std::cout << digitalRead( DHTPIN );
-//    // Detect change and read data
-//    for ( i = 0; i < MAXTIMINGS; i++ )
-//    {
-//        counter = 0;
-//        while ( digitalRead( DHTPIN ) == laststate )
-//        {
-//            counter++;
-//            delayMicroseconds( 1 );
-//            if ( counter == 255 )
-//            {
-//                break;
-//            }
-//        }
-//        laststate = digitalRead( DHTPIN );
-//
-//        if ( counter == 255 )
-//            break;
-//
-//        // Ignore first 3 transitions
-//        if ( (i >= 4) && (i % 2 == 0) )
-//        {
-//            // Add each bit into the storage bytes
-//            dht11_dat[j / 8] <<= 1;
-//            if ( counter > 16 )
-//                dht11_dat[j / 8] |= 1;
-//            j++;
-//        }
-//    }
-//
-//    // Check that 40 bits (8bit x 5 ) were read + verify checksum in the last byte
-//    if ( (j >= 40) && (dht11_dat[4] == ( (dht11_dat[0] + dht11_dat[1] + dht11_dat[2] + dht11_dat[3]) & 0xFF) ) )
-//    {
-//        return dht11_dat; // If all ok, return pointer to the data array
-//    } else  {
-//        dht11_dat[0] = -1;
-//        return dht11_dat; //If there was an error, set first array element to -1 as flag to main function
-//    }
-//}
-//
+
 //int main(int argc, char *argv[]){
 //
 //    // Saving IP address for all programs
@@ -483,10 +424,65 @@ int main(int argc, char* argv[])
     char char_input[input.length() + 1];
     strcpy(char_input, input.c_str());
     ADDRESS = char_input;
+    int rc;
+
+    // ------ PIR code ----- //
+
+    auto start_pir = high_resolution_clock::now(); // Starting timer
+
+    MQTTClient client_pir;
+    MQTTClient_connectOptions conn_opts_pir = MQTTClient_connectOptions_initializer;
+    MQTTClient_create(&client_pir, ADDRESS, CLIENTID_PIR, MQTTCLIENT_PERSISTENCE_NONE, NULL);
+    conn_opts_pir.keepAliveInterval = 20;
+    conn_opts_pir.cleansession = 1;
+
+    if ((rc = MQTTClient_connect(client_pir, &conn_opts_pir)) != MQTTCLIENT_SUCCESS){
+        printf("Failed to connect, return code %d\n", rc);
+        exit(EXIT_FAILURE);
+    } else{
+        printf("Connected. Result code %d\n", rc);
+    }
+
+    pinMode(PIN_PIR, INPUT);
+    bool motion = false;
+    int count = 0;
+    while(count <= 100) {
+        if(count == 100){
+            rapidjson::Document document_done;
+            document_done.SetObject();
+            rapidjson::Document::AllocatorType& allocator1 = document_done.GetAllocator();
+            document_done.AddMember("Done", true, allocator1);
+            std::string pub_message_done = json_to_string(document_done);
+            rc = publish_message(pub_message_done, TOPIC_PIR, client_pir);
+        }
+        else {
+            motion = digitalRead(PIN_PIR);
+            //Create JSON DOM document object for humidity
+            rapidjson::Document document_pir;
+            document_pir.SetObject();
+            rapidjson::Document::AllocatorType &allocator2 = document_pir.GetAllocator();
+            document_pir.AddMember("PIR", motion, allocator2);
+            try {
+                std::string pub_message_pir = json_to_string(document_pir);
+                rc = publish_message(pub_message_pir, TOPIC_PIR, client_pir);
+            } catch (const std::exception &exc) {
+                // catch anything thrown within try block that derives from std::exception
+                std::cerr << exc.what();
+            }
+        }
+        count = count + 1;
+    }
+
+    // End of PIR loop. Stop MQTT and calculate runtime
+    auto end_pir = high_resolution_clock::now();
+    std::chrono::duration<double> timer = end_pir-start_pir;
+    std::ofstream outfile;
+    outfile.open("piResultsCppMono.txt", std::ios_base::app); // append to the results text file
+    outfile << "PIR publisher runtime = " << timer.count() << "\n";
+    std::cout << "PIR runtime = " << timer.count() << "\n";
 
     MQTTClient client;
     MQTTClient_connectOptions conn_opts = MQTTClient_connectOptions_initializer;
-    int rc;
 
     MQTTClient_create(&client, ADDRESS, CLIENTID_HT, MQTTCLIENT_PERSISTENCE_NONE, NULL);
     conn_opts.keepAliveInterval = 20;
