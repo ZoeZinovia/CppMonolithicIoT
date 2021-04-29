@@ -289,38 +289,38 @@ int main(int argc, char *argv[]){
     outfile << "PIR publisher runtime = " << timer.count() << "\n";
     std::cout << "PIR runtime = " << timer.count() << "\n";
 
-//    // ------ Temp and Humidity code ------ //
-//
-//    auto start_HT = high_resolution_clock::now(); // Starting timer
-//
-//    MQTTClient client_HT;
-//    MQTTClient_connectOptions conn_opts_HT = MQTTClient_connectOptions_initializer;
-//
-//    MQTTClient_create(&client_HT, ADDRESS, CLIENTID_H_T, MQTTCLIENT_PERSISTENCE_NONE, NULL);
-//    conn_opts_HT.keepAliveInterval = 20;
-//    conn_opts_HT.cleansession = 1;
-//
-//    if ((rc = MQTTClient_connect(client_HT, &conn_opts_HT)) != MQTTCLIENT_SUCCESS)
-//    {
-//        printf("Failed to connect, return code %d\n", rc);
-//        exit(EXIT_FAILURE);
-//    } else{
-//        printf("Connected. Result code %d\n", rc);
-//    }
-//
-//    double temperature = 0;
-//    double humidity = 0;
-//    int *readings = read_dht11_dat(); // function returns an array. Index 0 and 1 are for humidity, index 2 and 3 are for temp and index 4 is the checksum
-//    int counter = 0;
-//    while(readings[0] == -1 && counter < 50){
-//        readings = read_dht11_dat(); // Errors frequently occur when reading dht sensor. Keep reading until values are returned.
-//    }
-//    if(counter == 5){
-//        std::cout << "Problem with DHT11 sensor. Check Raspberry Pi \n";
-//        return 1;
-//    }
-//    humidity = readings[0] + (readings[1]/10);
-//    temperature = readings[2] + (readings[3]/10);
+    // ------ Temp and Humidity code ------ //
+
+    auto start_HT = high_resolution_clock::now(); // Starting timer
+
+    MQTTClient client_HT;
+    MQTTClient_connectOptions conn_opts_HT = MQTTClient_connectOptions_initializer;
+
+    MQTTClient_create(&client_HT, ADDRESS, CLIENTID_H_T, MQTTCLIENT_PERSISTENCE_NONE, NULL);
+    conn_opts_HT.keepAliveInterval = 20;
+    conn_opts_HT.cleansession = 1;
+
+    if ((rc = MQTTClient_connect(client_HT, &conn_opts_HT)) != MQTTCLIENT_SUCCESS)
+    {
+        printf("Failed to connect, return code %d\n", rc);
+        exit(EXIT_FAILURE);
+    } else{
+        printf("Connected. Result code %d\n", rc);
+    }
+
+    double temperature = 0;
+    double humidity = 0;
+    int *readings = read_dht11_dat(); // function returns an array. Index 0 and 1 are for humidity, index 2 and 3 are for temp and index 4 is the checksum
+    int counter = 0;
+    while(readings[0] == -1 && counter < 50){
+        readings = read_dht11_dat(); // Errors frequently occur when reading dht sensor. Keep reading until values are returned.
+    }
+    if(counter == 5){
+        std::cout << "Problem with DHT11 sensor. Check Raspberry Pi \n";
+        return 1;
+    }
+    humidity = readings[0] + (readings[1]/10);
+    temperature = readings[2] + (readings[3]/10);
 //
 //    count = 0;
 //    while(count <= 100) {
@@ -378,8 +378,8 @@ int main(int argc, char *argv[]){
     MQTTClient_destroy(&client_pir);
     MQTTClient_disconnect(client_led, 10000);
     MQTTClient_destroy(&client_led);
-//    MQTTClient_disconnect(client_HT, 10000);
-//    MQTTClient_destroy(&client_HT);
+    MQTTClient_disconnect(client_HT, 10000);
+    MQTTClient_destroy(&client_HT);
     digitalWrite(pin_LED, 0);
 
     return rc;
