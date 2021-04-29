@@ -3,146 +3,146 @@
 ////
 //
 ////
-//// Created by Shani du Plessis on 20/04/2021.
-////
+// Created by Shani du Plessis on 20/04/2021.
 //
-//extern "C" {
-//    #include <wiringPi.h>
-//    #include <stdio.h>
-//    #include <stdlib.h>
-//    #include <string.h>
-//    #include "MQTTClient.h"
-//}
-//#include <csignal>
-//#include <iostream>
-//#include "include/rapidjson/document.h"
-//#include "include/rapidjson/stringbuffer.h"
-//#include "include/rapidjson/prettywriter.h"
-//#include "include/rapidjson/writer.h"
-//#include <chrono>
-//#include <fstream>
-//
-//
-////using namespace std;
-//using namespace rapidjson;
-//using namespace std::chrono;
-//
-//// variables for all
-//
-//volatile MQTTClient_deliveryToken deliveredtoken;
-//char* ADDRESS;
-//
-//// LED variables
-//
-//#define CLIENTID_LED    "ledSubscriber"
-//#define TOPIC_LED       "LED"
-//#define QOS              0
-//
-//int pin_LED;
-//bool led_status;
-//std::string session_status;
-//int num_messages = 0;
-//auto start_led = high_resolution_clock::now(); // initialize start
-//
-//// PIR variables
-//
-//#define CLIENTID_PIR    "pir_client"
-//#define TOPIC_PIR       "PIR"
-//#define TIMEOUT     10000L
-//#define PIN_PIR 17
-//
-//
-//// Humidity and Temperature variables
-//
-//#define CLIENTID_H_T    "hum_temp_client"
-//#define TOPIC_T       "Temperature"
-//#define TOPIC_H       "Humidity"
-//
-//#define MAXTIMINGS	85
-//#define DHTPIN		7
-//
-//int dht11_dat[5] = { 0, 0, 0, 0, 0 }; //first 8bits is for humidity integral value, second 8bits for humidity decimal, third for temp integral, fourth for temperature decimal and last for checksum
-//
-//// ------ LED code ------ //
-//void delivered(void *context, MQTTClient_deliveryToken dt) // Required callback
-//{
-//    printf("Message with token value %d delivery confirmed\n", dt);
-//    deliveredtoken = dt;
-//}
-//
-//int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *message) // Callback function for when an MQTT message arrives from the broker
-//{
-//    num_messages = num_messages + 1;
-//    if(num_messages == 1){
-//        start_led = high_resolution_clock::now(); // Starting timer
-//    }
-//    int i;
-//    char* payloadptr; //payload
-//
-//    payloadptr = (char*)message->payload; //payload converted to char*
-//    int len = strlen(payloadptr);
-//    if(payloadptr[len-2] == '}'){ // Fix for a bug in RapidJson
-//        payloadptr[len-1] = '\0';
-//    }
-//
-//    rapidjson::Document document;
-//    document.Parse(payloadptr); // Parse string to JSON
-//    if(document.HasMember("Done")){ // Done message is received from publisher when communication ends. This triggers the end of the session and the end of the timer
-//        MQTTClient_freeMessage(&message);
-//        MQTTClient_free(topicName);
-//        session_status = "Done";
-//        auto end_led = high_resolution_clock::now();
-//        std::chrono::duration<double> timer = end_led-start_led;
-//        std::cout << "LED subscriber runtime = " << timer.count() << "\n";
-//        std::ofstream outfile;
-//        outfile.open("piResultsCppMono.txt", std::ios_base::app); // append to the results text file
-//        outfile << "LED subscriber runtime = " << timer.count() << "\n";
-//        return 0;
-//    } else{
-//        if(document.HasMember("LED_1")) { // If the message is about the LED status, the LED is switch accordingly
-//            led_status = (bool) document["LED_1"].GetBool();
-//            pin_LED = document["GPIO"].GetInt();
-//            pinMode(pin_LED, OUTPUT);
-//            digitalWrite(pin_LED, led_status);
-//        }
-//        MQTTClient_freeMessage(&message);
-//        MQTTClient_free(topicName);
-//        return 1;
-//    }
-//}
-//
-//void connlost(void *context, char *cause) // Required callback for lost connection
-//{
-//    printf("\nConnection lost\n");
-//    printf("     cause: %s\n", cause);
-//}
-//
-//int publish_message(std::string str_message, const char *topic, MQTTClient client){
-//    // Initializing components for MQTT publisher
-//    MQTTClient_message pubmsg = MQTTClient_message_initializer;
-//    MQTTClient_deliveryToken token;
-//
-//    // Updating values of pubmsg object
-//    char *message = new char[str_message.length() + 1];
-//    strcpy(message, str_message.c_str());
-//    pubmsg.payload = message;
-//    pubmsg.payloadlen = (int)std::strlen(message);
-//    pubmsg.qos = QOS;
-//    pubmsg.retained = 0;
-//
-//    MQTTClient_publishMessage(client, topic, &pubmsg, &token); // Publish the message
-//    int rc = MQTTClient_waitForCompletion(client, token, TIMEOUT);
-//    return rc;
-//}
-//
-//std::string json_to_string(const rapidjson::Document& doc){
-//    //Serialize JSON to string for the message
-//    rapidjson::StringBuffer string_buffer;
-//    string_buffer.Clear();
-//    rapidjson::PrettyWriter<rapidjson::StringBuffer> writer(string_buffer);
-//    doc.Accept(writer);
-//    return std::string(string_buffer.GetString());
-//}
+
+extern "C" {
+    #include <wiringPi.h>
+    #include <stdio.h>
+    #include <stdlib.h>
+    #include <string.h>
+    #include "MQTTClient.h"
+}
+#include <csignal>
+#include <iostream>
+#include "include/rapidjson/document.h"
+#include "include/rapidjson/stringbuffer.h"
+#include "include/rapidjson/prettywriter.h"
+#include "include/rapidjson/writer.h"
+#include <chrono>
+#include <fstream>
+
+
+//using namespace std;
+using namespace rapidjson;
+using namespace std::chrono;
+
+// variables for all
+
+volatile MQTTClient_deliveryToken deliveredtoken;
+char* ADDRESS;
+
+// LED variables
+
+#define CLIENTID_LED    "ledSubscriber"
+#define TOPIC_LED       "LED"
+#define QOS              0
+
+int pin_LED;
+bool led_status;
+std::string session_status;
+int num_messages = 0;
+auto start_led = high_resolution_clock::now(); // initialize start
+
+// PIR variables
+
+#define CLIENTID_PIR    "pir_client"
+#define TOPIC_PIR       "PIR"
+#define TIMEOUT     10000L
+#define PIN_PIR 17
+
+
+// Humidity and Temperature variables
+
+#define CLIENTID_H_T    "hum_temp_client"
+#define TOPIC_T       "Temperature"
+#define TOPIC_H       "Humidity"
+
+#define MAXTIMINGS	85
+#define DHTPIN		7
+
+int dht11_dat[5] = { 0, 0, 0, 0, 0 }; //first 8bits is for humidity integral value, second 8bits for humidity decimal, third for temp integral, fourth for temperature decimal and last for checksum
+
+// ------ LED code ------ //
+void delivered(void *context, MQTTClient_deliveryToken dt) // Required callback
+{
+    printf("Message with token value %d delivery confirmed\n", dt);
+    deliveredtoken = dt;
+}
+
+int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *message) // Callback function for when an MQTT message arrives from the broker
+{
+    num_messages = num_messages + 1;
+    if(num_messages == 1){
+        start_led = high_resolution_clock::now(); // Starting timer
+    }
+    int i;
+    char* payloadptr; //payload
+
+    payloadptr = (char*)message->payload; //payload converted to char*
+    int len = strlen(payloadptr);
+    if(payloadptr[len-2] == '}'){ // Fix for a bug in RapidJson
+        payloadptr[len-1] = '\0';
+    }
+
+    rapidjson::Document document;
+    document.Parse(payloadptr); // Parse string to JSON
+    if(document.HasMember("Done")){ // Done message is received from publisher when communication ends. This triggers the end of the session and the end of the timer
+        MQTTClient_freeMessage(&message);
+        MQTTClient_free(topicName);
+        session_status = "Done";
+        auto end_led = high_resolution_clock::now();
+        std::chrono::duration<double> timer = end_led-start_led;
+        std::cout << "LED subscriber runtime = " << timer.count() << "\n";
+        std::ofstream outfile;
+        outfile.open("piResultsCppMono.txt", std::ios_base::app); // append to the results text file
+        outfile << "LED subscriber runtime = " << timer.count() << "\n";
+        return 0;
+    } else{
+        if(document.HasMember("LED_1")) { // If the message is about the LED status, the LED is switch accordingly
+            led_status = (bool) document["LED_1"].GetBool();
+            pin_LED = document["GPIO"].GetInt();
+            pinMode(pin_LED, OUTPUT);
+            digitalWrite(pin_LED, led_status);
+        }
+        MQTTClient_freeMessage(&message);
+        MQTTClient_free(topicName);
+        return 1;
+    }
+}
+
+void connlost(void *context, char *cause) // Required callback for lost connection
+{
+    printf("\nConnection lost\n");
+    printf("     cause: %s\n", cause);
+}
+
+int publish_message(std::string str_message, const char *topic, MQTTClient client){
+    // Initializing components for MQTT publisher
+    MQTTClient_message pubmsg = MQTTClient_message_initializer;
+    MQTTClient_deliveryToken token;
+
+    // Updating values of pubmsg object
+    char *message = new char[str_message.length() + 1];
+    strcpy(message, str_message.c_str());
+    pubmsg.payload = message;
+    pubmsg.payloadlen = (int)std::strlen(message);
+    pubmsg.qos = QOS;
+    pubmsg.retained = 0;
+
+    MQTTClient_publishMessage(client, topic, &pubmsg, &token); // Publish the message
+    int rc = MQTTClient_waitForCompletion(client, token, TIMEOUT);
+    return rc;
+}
+
+std::string json_to_string(const rapidjson::Document& doc){
+    //Serialize JSON to string for the message
+    rapidjson::StringBuffer string_buffer;
+    string_buffer.Clear();
+    rapidjson::PrettyWriter<rapidjson::StringBuffer> writer(string_buffer);
+    doc.Accept(writer);
+    return std::string(string_buffer.GetString());
+}
 //
 //// Reading of the dht11 is rather complex in C/C++. See this site that explains how readings are made: http://www.uugear.com/portfolio/dht11-humidity-temperature-sensor-module/
 //int* read_dht11_dat()
@@ -391,22 +391,22 @@
 //// Created by Shani du Plessis on 21/04/2021.
 ////
 
-extern "C" {
-#include <wiringPi.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "MQTTClient.h"
-}
-#include <csignal>
-#include <iostream>
-#include "include/rapidjson/document.h"
-#include "include/rapidjson/stringbuffer.h"
-#include "include/rapidjson/prettywriter.h"
-#include "include/rapidjson/writer.h"
-#include <chrono>
-#include <fstream>
-#include <typeinfo>
+//extern "C" {
+//#include <wiringPi.h>
+//#include <stdio.h>
+//#include <stdlib.h>
+//#include <string.h>
+//#include "MQTTClient.h"
+//}
+//#include <csignal>
+//#include <iostream>
+//#include "include/rapidjson/document.h"
+//#include "include/rapidjson/stringbuffer.h"
+//#include "include/rapidjson/prettywriter.h"
+//#include "include/rapidjson/writer.h"
+//#include <chrono>
+//#include <fstream>
+//#include <typeinfo>
 
 // MQTT variables
 
