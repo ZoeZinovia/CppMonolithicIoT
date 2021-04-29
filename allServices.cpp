@@ -221,7 +221,7 @@ int main(int argc, char* argv[])
     conn_opts.keepAliveInterval = 20;
     conn_opts.cleansession = 1;
 
-    if ((rc = MQTTClient_connect(client_pir, &conn_opts_pir)) != MQTTCLIENT_SUCCESS){
+    if ((rc = MQTTClient_connect(client_pir, &conn_opts)) != MQTTCLIENT_SUCCESS){
         printf("Failed to connect, return code %d\n", rc);
         exit(EXIT_FAILURE);
     } else{
