@@ -346,20 +346,20 @@ int main(int argc, char* argv[])
 
     wiringPiSetup();
 
-//    MQTTClient client_led;
-//    MQTTClient_create(&client, ADDRESS, CLIENTID_LED, MQTTCLIENT_PERSISTENCE_NONE, NULL);
-//
-//    MQTTClient_setCallbacks(client, NULL, connlost, msgarrvd, delivered);
-//
-//    if ((rc = MQTTClient_connect(client, &conn_opts)) != MQTTCLIENT_SUCCESS) //Unsuccessful connection
-//    {
-//        printf("Failed to connect, return code %d\n", rc);
-//        exit(EXIT_FAILURE);
-//    }
-//    else{ // Successful connection
-//        printf("Connected to led. Result code %d\n", rc);
-//    }
-    MQTTClient_subscribe(client, TOPIC_LED, QOS);
+    MQTTClient client_led;
+    MQTTClient_create(&client_led, ADDRESS, CLIENTID_LED, MQTTCLIENT_PERSISTENCE_NONE, NULL);
+
+    MQTTClient_setCallbacks(client_led, NULL, connlost, msgarrvd, delivered);
+
+    if ((rc = MQTTClient_connect(client_led, &conn_opts)) != MQTTCLIENT_SUCCESS) //Unsuccessful connection
+    {
+        printf("Failed to connect, return code %d\n", rc);
+        exit(EXIT_FAILURE);
+    }
+    else{ // Successful connection
+        printf("Connected to led. Result code %d\n", rc);
+    }
+    MQTTClient_subscribe(client_led, TOPIC_LED, QOS);
 
     while(session_status != "Done"){ // Continue listening for messages until end of session
         //Do nothing
@@ -368,8 +368,8 @@ int main(int argc, char* argv[])
     //MQTTClient_unsubscribe(client, TOPIC);
     MQTTClient_disconnect(client, 10000);
     MQTTClient_destroy(&client);
-//    MQTTClient_disconnect(client_led, 10000);
-//    MQTTClient_destroy(&client_led);
+    MQTTClient_disconnect(client_led, 10000);
+    MQTTClient_destroy(&client_led);
 //    MQTTClient_disconnect(client_ht, 10000);
 //    MQTTClient_destroy(&client_ht);
     digitalWrite(pin_LED, 0);
