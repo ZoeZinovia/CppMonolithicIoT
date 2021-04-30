@@ -337,6 +337,9 @@ int main(int argc, char* argv[])
     // End of loop. Calculate runtime
     auto end_HT = high_resolution_clock::now();
     std::chrono::duration<double> timer_HT = end_HT-start_HT;
+    std::cout << timer_HT.count() << "!!\n";
+    outfile.open("piResultsCppMono.txt", std::ios_base::app); // append to the results text file
+    outfile << "PIRRRR publisher runtime = " << timer_pir.count() << "\n";
     outfile.open("piResultsCppMono.txt", std::ios_base::app); // append to the results text file
     outfile << "Humidity and temperature publisher runtime = " << timer_HT.count() << "\n";
     std::cout << "Humidity and temperature runtime = " << timer_HT.count() << "\n";
