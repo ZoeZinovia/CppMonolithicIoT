@@ -77,7 +77,6 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *m
     char* payloadptr; //payload
 
     payloadptr = (char*)message->payload; //payload converted to char*
-    std::cout << payloadptr << "\n";
     int len = strlen(payloadptr);
     if(payloadptr[len-2] == '}'){ // Fix for a bug in RapidJson
         payloadptr[len-1] = '\0';
@@ -338,7 +337,7 @@ int main(int argc, char* argv[])
     // End of loop. Calculate runtime
     auto end_HT = high_resolution_clock::now();
     std::chrono::duration<double> timer_HT = end_HT-start_HT;
-    outfile.open("piResultsCpp.txt", std::ios_base::app); // append to the results text file
+    outfile.open("piResultsCppMono.txt", std::ios_base::app); // append to the results text file
     outfile << "Humidity and temperature publisher runtime = " << timer_HT.count() << "\n";
     std::cout << "Humidity and temperature runtime = " << timer_HT.count() << "\n";
 

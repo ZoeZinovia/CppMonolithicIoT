@@ -1,4 +1,3 @@
-LED subscriber runtime = 1.3618
 PIR publisher runtime = 0.114107
 LED subscriber runtime = 1.59578
 PIR publisher runtime = 0.133652
