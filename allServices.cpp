@@ -215,13 +215,13 @@ int main(int argc, char* argv[])
 
     auto start_pir = high_resolution_clock::now(); // Starting timer
 
-    MQTTClient client_pir;
+    MQTTClient client;
     MQTTClient_connectOptions conn_opts = MQTTClient_connectOptions_initializer;
-    MQTTClient_create(&client_pir, ADDRESS, CLIENTID_PIR, MQTTCLIENT_PERSISTENCE_NONE, NULL);
+    MQTTClient_create(&client, ADDRESS, CLIENTID_PIR, MQTTCLIENT_PERSISTENCE_NONE, NULL);
     conn_opts.keepAliveInterval = 20;
     conn_opts.cleansession = 1;
 
-    if ((rc = MQTTClient_connect(client_pir, &conn_opts)) != MQTTCLIENT_SUCCESS){
+    if ((rc = MQTTClient_connect(client, &conn_opts)) != MQTTCLIENT_SUCCESS){
         printf("Failed to connect, return code %d\n", rc);
         exit(EXIT_FAILURE);
     } else{
@@ -238,7 +238,7 @@ int main(int argc, char* argv[])
             rapidjson::Document::AllocatorType& allocator1 = document_done.GetAllocator();
             document_done.AddMember("Done", true, allocator1);
             std::string pub_message_done = json_to_string(document_done);
-            rc = publish_message(pub_message_done, TOPIC_PIR, client_pir);
+            rc = publish_message(pub_message_done, TOPIC_PIR, client);
         }
         else {
             motion = digitalRead(PIN_PIR);
@@ -249,7 +249,7 @@ int main(int argc, char* argv[])
             document_pir.AddMember("PIR", motion, allocator2);
             try {
                 std::string pub_message_pir = json_to_string(document_pir);
-                rc = publish_message(pub_message_pir, TOPIC_PIR, client_pir);
+                rc = publish_message(pub_message_pir, TOPIC_PIR, client);
             } catch (const std::exception &exc) {
                 // catch anything thrown within try block that derives from std::exception
                 std::cerr << exc.what();
@@ -270,17 +270,17 @@ int main(int argc, char* argv[])
 
     auto start_HT = high_resolution_clock::now(); // Starting timer
 
-    MQTTClient client_ht;
-
-    MQTTClient_create(&client_ht, ADDRESS, CLIENTID_HT, MQTTCLIENT_PERSISTENCE_NONE, NULL);
-
-    if ((rc = MQTTClient_connect(client_ht, &conn_opts)) != MQTTCLIENT_SUCCESS)
-    {
-        printf("Failed to connect, return code %d\n", rc);
-        exit(EXIT_FAILURE);
-    } else{
-        printf("Connected to humidity and temperature. Result code %d\n", rc);
-    }
+//    MQTTClient client;
+//
+//    MQTTClient_create(&client, ADDRESS, CLIENTID_HT, MQTTCLIENT_PERSISTENCE_NONE, NULL);
+//
+//    if ((rc = MQTTClient_connect(client, &conn_opts)) != MQTTCLIENT_SUCCESS)
+//    {
+//        printf("Failed to connect, return code %d\n", rc);
+//        exit(EXIT_FAILURE);
+//    } else{
+//        printf("Connected to humidity and temperature. Result code %d\n", rc);
+//    }
 
     double temperature = 0;
     double humidity = 0;
@@ -304,8 +304,8 @@ int main(int argc, char* argv[])
             rapidjson::Document::AllocatorType& allocator1 = document_done.GetAllocator();
             document_done.AddMember("Done", true, allocator1);
             std::string pub_message_done = json_to_string(document_done);
-            rc = publish_message(pub_message_done, TOPIC_T, client_ht);
-            rc = publish_message(pub_message_done, TOPIC_H, client_ht);
+            rc = publish_message(pub_message_done, TOPIC_T, client);
+            rc = publish_message(pub_message_done, TOPIC_H, client);
         }
         else {
             //Create JSON DOM document object for humidity
@@ -323,9 +323,9 @@ int main(int argc, char* argv[])
             document_temperature.AddMember("Unit", "C", allocator3);
             try {
                 std::string pub_message_humidity = json_to_string(document_humidity);
-                rc = publish_message(pub_message_humidity, TOPIC_H, client_ht);
+                rc = publish_message(pub_message_humidity, TOPIC_H, client);
                 std::string pub_message_temperature = json_to_string(document_temperature);
-                rc = publish_message(pub_message_temperature, TOPIC_T, client_ht);
+                rc = publish_message(pub_message_temperature, TOPIC_T, client);
             } catch (const std::exception &exc) {
                 // catch anything thrown within try block that derives from std::exception
                 std::cerr << exc.what();
@@ -345,32 +345,32 @@ int main(int argc, char* argv[])
 
     wiringPiSetup();
 
-    MQTTClient client_led;
-    MQTTClient_create(&client_led, ADDRESS, CLIENTID_LED, MQTTCLIENT_PERSISTENCE_NONE, NULL);
-
-    MQTTClient_setCallbacks(client_led, NULL, connlost, msgarrvd, delivered);
-
-    if ((rc = MQTTClient_connect(client_led, &conn_opts)) != MQTTCLIENT_SUCCESS) //Unsuccessful connection
-    {
-        printf("Failed to connect, return code %d\n", rc);
-        exit(EXIT_FAILURE);
-    }
-    else{ // Successful connection
-        printf("Connected to led. Result code %d\n", rc);
-    }
-    MQTTClient_subscribe(client_led, TOPIC_LED, QOS);
+//    MQTTClient client_led;
+//    MQTTClient_create(&client, ADDRESS, CLIENTID_LED, MQTTCLIENT_PERSISTENCE_NONE, NULL);
+//
+//    MQTTClient_setCallbacks(client, NULL, connlost, msgarrvd, delivered);
+//
+//    if ((rc = MQTTClient_connect(client, &conn_opts)) != MQTTCLIENT_SUCCESS) //Unsuccessful connection
+//    {
+//        printf("Failed to connect, return code %d\n", rc);
+//        exit(EXIT_FAILURE);
+//    }
+//    else{ // Successful connection
+//        printf("Connected to led. Result code %d\n", rc);
+//    }
+    MQTTClient_subscribe(client, TOPIC_LED, QOS);
 
     while(session_status != "Done"){ // Continue listening for messages until end of session
         //Do nothing
     }
 
     //MQTTClient_unsubscribe(client, TOPIC);
-    MQTTClient_disconnect(client_pir, 10000);
-    MQTTClient_destroy(&client_pir);
-    MQTTClient_disconnect(client_led, 10000);
-    MQTTClient_destroy(&client_led);
-    MQTTClient_disconnect(client_ht, 10000);
-    MQTTClient_destroy(&client_ht);
+    MQTTClient_disconnect(client, 10000);
+    MQTTClient_destroy(&client);
+//    MQTTClient_disconnect(client_led, 10000);
+//    MQTTClient_destroy(&client_led);
+//    MQTTClient_disconnect(client_ht, 10000);
+//    MQTTClient_destroy(&client_ht);
     digitalWrite(pin_LED, 0);
 
     return rc;
