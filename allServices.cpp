@@ -294,6 +294,7 @@ int main(int argc, char* argv[])
             }
             humidity = readings[0] + (readings[1] / 10);
             temperature = readings[2] + (readings[3] / 10);
+        }
         if(count == num_iterations){
             rapidjson::Document document_done;
             document_done.SetObject();
