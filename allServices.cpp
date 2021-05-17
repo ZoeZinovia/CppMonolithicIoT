@@ -231,8 +231,9 @@ int main(int argc, char* argv[])
     pinMode(PIN_PIR, INPUT);
     bool motion = false;
     int count = 0;
-    while(count <= 100) {
-        if(count == 100){
+    int num_iterations = 10000;
+    while(count <= num_iterations) {
+        if(count == num_iterations){
             rapidjson::Document document_done;
             document_done.SetObject();
             rapidjson::Document::AllocatorType& allocator1 = document_done.GetAllocator();
@@ -270,35 +271,30 @@ int main(int argc, char* argv[])
 
     auto start_HT = high_resolution_clock::now(); // Starting timer
 
-//    MQTTClient client;
-//
-//    MQTTClient_create(&client, ADDRESS, CLIENTID_HT, MQTTCLIENT_PERSISTENCE_NONE, NULL);
-//
-//    if ((rc = MQTTClient_connect(client, &conn_opts)) != MQTTCLIENT_SUCCESS)
-//    {
-//        printf("Failed to connect, return code %d\n", rc);
-//        exit(EXIT_FAILURE);
-//    } else{
-//        printf("Connected to humidity and temperature. Result code %d\n", rc);
-//    }
-
     double temperature = 0;
     double humidity = 0;
-    int *readings = read_dht11_dat();
-    int counter = 0;
-    while(readings[0] == -1 && counter < 50){
-        readings = read_dht11_dat(); // Errors frequently occur when reading dht sensor. Keep reading until values are returned.
-    }
-    if(counter == 5){
-        std::cout << "Problem with DHT11 sensor. Check Raspberry Pi \n";
-        return 1;
-    }
-    humidity = readings[0] + (readings[1]/10);
-    temperature = readings[2] + (readings[3]/10);
-
     count = 0;
-    while(count <= 100) {
-        if(count == 100){
+    auto dhtStart = high_resolution_clock::now();
+    auto dhtEnd = high_resolution_clock::now();
+    std::chrono::duration<double> dhtTimer;
+    while(count <= num_iterations) {
+        dhtEnd = high_resolution_clock::now();
+        dhtTimer = dhtEnd - dhtStart;
+        if((temperature == 0 && humidity == 0) || dhtTimer > (std::chrono::seconds(1))) { //need to get values from
+            int *readings = read_dht11_dat();
+            dhtStart = high_resolution_clock::now();
+            int counter = 0;
+            while (readings[0] == -1 && counter < 5) {
+                readings = read_dht11_dat(); // Errors frequently occur when reading dht sensor. Keep reading until values are returned.
+                counter = counter + 1;
+            }
+            if (counter == 5) {
+                std::cout << "Problem with DHT11 sensor. Check Raspberry Pi \n";
+                return 1;
+            }
+            humidity = readings[0] + (readings[1] / 10);
+            temperature = readings[2] + (readings[3] / 10);
+        if(count == num_iterations){
             rapidjson::Document document_done;
             document_done.SetObject();
             rapidjson::Document::AllocatorType& allocator1 = document_done.GetAllocator();
