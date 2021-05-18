@@ -215,6 +215,7 @@ int main(int argc, char* argv[])
 
     wiringPiSetup();
 
+    MQTTClient_connectOptions conn_opts = MQTTClient_connectOptions_initializer;
     MQTTClient client_led;
     MQTTClient_create(&client_led, ADDRESS, CLIENTID_LED, MQTTCLIENT_PERSISTENCE_NONE, NULL);
 
@@ -235,7 +236,6 @@ int main(int argc, char* argv[])
     auto start_pir = high_resolution_clock::now(); // Starting timer
 
     MQTTClient client;
-    MQTTClient_connectOptions conn_opts = MQTTClient_connectOptions_initializer;
     MQTTClient_create(&client, ADDRESS, CLIENTID_PIR, MQTTCLIENT_PERSISTENCE_NONE, NULL);
     conn_opts.keepAliveInterval = 20;
     conn_opts.cleansession = 1;
