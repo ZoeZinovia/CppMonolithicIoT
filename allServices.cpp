@@ -278,7 +278,7 @@ int main(int argc, char* argv[])
     auto dhtEnd = high_resolution_clock::now();
     std::chrono::duration<double> dhtTimer;
     while(count <= num_iterations) {
-        std::cout << count;
+        std::cout << count << " ";
         if(count == num_iterations){
             rapidjson::Document document_done;
             document_done.SetObject();
