@@ -351,8 +351,9 @@ int main(int argc, char* argv[])
     // End of loop. Calculate runtime
     auto end_HT = high_resolution_clock::now();
     std::chrono::duration<double> timer_HT = end_HT-start_HT;
-    outfile.open("piResultsCppMono.txt", std::ios_base::app); // append to the results text file
-    outfile << "Humidity and temperature publisher runtime = " << timer_HT.count() << "\n";
+    std::ofstream outfile2;
+    outfile2.open("piResultsCppMono.txt", std::ios_base::app); // append to the results text file
+    outfile2 << "Humidity and temperature publisher runtime = " << timer_HT.count() << "\n";
     std::cout << "Humidity and temperature runtime = " << timer_HT.count() << "\n";
 
     while(session_status != "Done"){ // Continue listening for messages until end of session
@@ -368,8 +369,8 @@ int main(int argc, char* argv[])
 
     auto end = high_resolution_clock::now();
     std::chrono::duration<double> timer = end-start;
-    outfile.open("piResultsCppMono.txt", std::ios_base::app); // append to the results text file
-    outfile << "Overall runtime = " << timer.count() << "\n";
+    outfile2.open("piResultsCppMono.txt", std::ios_base::app); // append to the results text file
+    outfile2 << "Overall runtime = " << timer.count() << "\n";
     std::cout << "Overall runtime = " << timer.count() << "\n";
 
     return rc;
