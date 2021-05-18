@@ -201,7 +201,7 @@ int* read_dht11_dat()
 
 int main(int argc, char* argv[])
 {
-
+    std::cout << "got to point 0";
     std::string input = argv[1]; // IP address as command line argument to avoid hard coding
     input.append(":1883"); // Append MQTT port
     char char_input[input.length() + 1];
