@@ -364,8 +364,6 @@ int main(int argc, char* argv[])
     MQTTClient_destroy(&client);
     MQTTClient_disconnect(client_led, 10000);
     MQTTClient_destroy(&client_led);
-//    MQTTClient_disconnect(client_ht, 10000);
-//    MQTTClient_destroy(&client_ht);
     digitalWrite(pin_LED, 0);
 
     return rc;
