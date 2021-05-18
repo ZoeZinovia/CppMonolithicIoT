@@ -209,7 +209,26 @@ int main(int argc, char* argv[])
     ADDRESS = char_input;
     int rc;
 
-    wiringPiSetup(); // Required for wiringPi
+//    wiringPiSetup(); // Required for wiringPi
+
+    // ------ LED code ------ //
+
+    wiringPiSetup();
+
+    MQTTClient client_led;
+    MQTTClient_create(&client_led, ADDRESS, CLIENTID_LED, MQTTCLIENT_PERSISTENCE_NONE, NULL);
+
+    MQTTClient_setCallbacks(client_led, NULL, connlost, msgarrvd, delivered);
+
+    if ((rc = MQTTClient_connect(client_led, &conn_opts)) != MQTTCLIENT_SUCCESS) //Unsuccessful connection
+    {
+        printf("Failed to connect, return code %d\n", rc);
+        exit(EXIT_FAILURE);
+    }
+    else{ // Successful connection
+        printf("Connected to led. Result code %d\n", rc);
+    }
+    MQTTClient_subscribe(client_led, TOPIC_LED, QOS);
 
     // ------ PIR code ----- //
 
@@ -335,25 +354,6 @@ int main(int argc, char* argv[])
     outfile2.open("piResultsCppMono.txt", std::ios_base::app); // append to the results text file
     outfile2 << "Humidity and temperature publisher runtime = " << timer_HT.count() << "\n";
     std::cout << "Humidity and temperature runtime = " << timer_HT.count() << "\n";
-
-    // ------ LED code ------ //
-
-    wiringPiSetup();
-
-    MQTTClient client_led;
-    MQTTClient_create(&client_led, ADDRESS, CLIENTID_LED, MQTTCLIENT_PERSISTENCE_NONE, NULL);
-
-    MQTTClient_setCallbacks(client_led, NULL, connlost, msgarrvd, delivered);
-
-    if ((rc = MQTTClient_connect(client_led, &conn_opts)) != MQTTCLIENT_SUCCESS) //Unsuccessful connection
-    {
-        printf("Failed to connect, return code %d\n", rc);
-        exit(EXIT_FAILURE);
-    }
-    else{ // Successful connection
-        printf("Connected to led. Result code %d\n", rc);
-    }
-    MQTTClient_subscribe(client_led, TOPIC_LED, QOS);
 
     while(session_status != "Done"){ // Continue listening for messages until end of session
         //Do nothing
