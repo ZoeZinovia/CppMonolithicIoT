@@ -267,77 +267,77 @@ int main(int argc, char* argv[])
     outfile << "PIR publisher runtime = " << timer_pir.count() << "\n";
     std::cout << "PIR runtime = " << timer_pir.count() << "\n";
 
-    // ------ Humidity temperature code ------ //
-
-    auto start_HT = high_resolution_clock::now(); // Starting timer
-
-    double temperature = 0;
-    double humidity = 0;
-    count = 0;
-    auto dhtStart = high_resolution_clock::now();
-    auto dhtEnd = high_resolution_clock::now();
-    std::chrono::duration<double> dhtTimer;
-    while(count <= num_iterations) {
-        dhtEnd = high_resolution_clock::now();
-        dhtTimer = dhtEnd - dhtStart;
-        if((temperature == 0 && humidity == 0) || dhtTimer > (std::chrono::seconds(1))) { //need to get values from
-            int *readings = read_dht11_dat();
-            dhtStart = high_resolution_clock::now();
-            int counter = 0;
-            while (readings[0] == -1 && counter < 5) {
-                readings = read_dht11_dat(); // Errors frequently occur when reading dht sensor. Keep reading until values are returned.
-                counter = counter + 1;
-            }
-            if (counter == 5) {
-                std::cout << "Problem with DHT11 sensor. Check Raspberry Pi \n";
-                return 1;
-            }
-            humidity = readings[0] + (readings[1] / 10);
-            temperature = readings[2] + (readings[3] / 10);
-        }
-        if(count == num_iterations){
-            rapidjson::Document document_done;
-            document_done.SetObject();
-            rapidjson::Document::AllocatorType& allocator1 = document_done.GetAllocator();
-            document_done.AddMember("Done", true, allocator1);
-            std::string pub_message_done = json_to_string(document_done);
-            rc = publish_message(pub_message_done, TOPIC_T, client);
-            rc = publish_message(pub_message_done, TOPIC_H, client);
-        }
-        else {
-            //Create JSON DOM document object for humidity
-            rapidjson::Document document_humidity;
-            document_humidity.SetObject();
-            rapidjson::Document::AllocatorType &allocator2 = document_humidity.GetAllocator();
-            document_humidity.AddMember("Humidity", humidity, allocator2);
-            document_humidity.AddMember("Unit", "%", allocator2);
-
-            //Create JSON DOM document object for temperature
-            rapidjson::Document document_temperature;
-            document_temperature.SetObject();
-            rapidjson::Document::AllocatorType &allocator3 = document_temperature.GetAllocator();
-            document_temperature.AddMember("Temp", temperature, allocator3);
-            document_temperature.AddMember("Unit", "C", allocator3);
-            try {
-                std::string pub_message_humidity = json_to_string(document_humidity);
-                rc = publish_message(pub_message_humidity, TOPIC_H, client);
-                std::string pub_message_temperature = json_to_string(document_temperature);
-                rc = publish_message(pub_message_temperature, TOPIC_T, client);
-            } catch (const std::exception &exc) {
-                // catch anything thrown within try block that derives from std::exception
-                std::cerr << exc.what();
-            }
-        }
-        count = count + 1;
-    }
-
-    // End of loop. Calculate runtime
-    auto end_HT = high_resolution_clock::now();
-    std::chrono::duration<double> timer_HT = end_HT-start_HT;
-    std::ofstream outfile2;
-    outfile2.open("piResultsCppMono.txt", std::ios_base::app); // append to the results text file
-    outfile2 << "Humidity and temperature publisher runtime = " << timer_HT.count() << "\n";
-    std::cout << "Humidity and temperature runtime = " << timer_HT.count() << "\n";
+//    // ------ Humidity temperature code ------ //
+//
+//    auto start_HT = high_resolution_clock::now(); // Starting timer
+//
+//    double temperature = 0;
+//    double humidity = 0;
+//    count = 0;
+//    auto dhtStart = high_resolution_clock::now();
+//    auto dhtEnd = high_resolution_clock::now();
+//    std::chrono::duration<double> dhtTimer;
+//    while(count <= num_iterations) {
+//        dhtEnd = high_resolution_clock::now();
+//        dhtTimer = dhtEnd - dhtStart;
+//        if((temperature == 0 && humidity == 0) || dhtTimer > (std::chrono::seconds(1))) { //need to get values from
+//            int *readings = read_dht11_dat();
+//            dhtStart = high_resolution_clock::now();
+//            int counter = 0;
+//            while (readings[0] == -1 && counter < 5) {
+//                readings = read_dht11_dat(); // Errors frequently occur when reading dht sensor. Keep reading until values are returned.
+//                counter = counter + 1;
+//            }
+//            if (counter == 5) {
+//                std::cout << "Problem with DHT11 sensor. Check Raspberry Pi \n";
+//                return 1;
+//            }
+//            humidity = readings[0] + (readings[1] / 10);
+//            temperature = readings[2] + (readings[3] / 10);
+//        }
+//        if(count == num_iterations){
+//            rapidjson::Document document_done;
+//            document_done.SetObject();
+//            rapidjson::Document::AllocatorType& allocator1 = document_done.GetAllocator();
+//            document_done.AddMember("Done", true, allocator1);
+//            std::string pub_message_done = json_to_string(document_done);
+//            rc = publish_message(pub_message_done, TOPIC_T, client);
+//            rc = publish_message(pub_message_done, TOPIC_H, client);
+//        }
+//        else {
+//            //Create JSON DOM document object for humidity
+//            rapidjson::Document document_humidity;
+//            document_humidity.SetObject();
+//            rapidjson::Document::AllocatorType &allocator2 = document_humidity.GetAllocator();
+//            document_humidity.AddMember("Humidity", humidity, allocator2);
+//            document_humidity.AddMember("Unit", "%", allocator2);
+//
+//            //Create JSON DOM document object for temperature
+//            rapidjson::Document document_temperature;
+//            document_temperature.SetObject();
+//            rapidjson::Document::AllocatorType &allocator3 = document_temperature.GetAllocator();
+//            document_temperature.AddMember("Temp", temperature, allocator3);
+//            document_temperature.AddMember("Unit", "C", allocator3);
+//            try {
+//                std::string pub_message_humidity = json_to_string(document_humidity);
+//                rc = publish_message(pub_message_humidity, TOPIC_H, client);
+//                std::string pub_message_temperature = json_to_string(document_temperature);
+//                rc = publish_message(pub_message_temperature, TOPIC_T, client);
+//            } catch (const std::exception &exc) {
+//                // catch anything thrown within try block that derives from std::exception
+//                std::cerr << exc.what();
+//            }
+//        }
+//        count = count + 1;
+//    }
+//
+//    // End of loop. Calculate runtime
+//    auto end_HT = high_resolution_clock::now();
+//    std::chrono::duration<double> timer_HT = end_HT-start_HT;
+//    std::ofstream outfile2;
+//    outfile2.open("piResultsCppMono.txt", std::ios_base::app); // append to the results text file
+//    outfile2 << "Humidity and temperature publisher runtime = " << timer_HT.count() << "\n";
+//    std::cout << "Humidity and temperature runtime = " << timer_HT.count() << "\n";
 
     // ------ LED code ------ //
 
