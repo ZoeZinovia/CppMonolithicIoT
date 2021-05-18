@@ -1,18 +1,18 @@
 	Command being timed: "./allServices 10.35.0.229"
-	User time (seconds): 10.17
+	User time (seconds): 9.71
 	System time (seconds): 0.46
-	Percent of CPU this job got: 93%
-	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:11.39
+	Percent of CPU this job got: 94%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:10.75
 	Average shared text size (kbytes): 0
 	Average unshared data size (kbytes): 0
 	Average stack size (kbytes): 0
 	Average total size (kbytes): 0
-	Maximum resident set size (kbytes): 4608
+	Maximum resident set size (kbytes): 4628
 	Average resident set size (kbytes): 0
 	Major (requiring I/O) page faults: 0
-	Minor (reclaiming a frame) page faults: 486
-	Voluntary context switches: 1684
-	Involuntary context switches: 588
+	Minor (reclaiming a frame) page faults: 487
+	Voluntary context switches: 1628
+	Involuntary context switches: 3085
 	Swaps: 0
 	File system inputs: 0
 	File system outputs: 8
@@ -22,206 +22,66 @@
 	Page size (bytes): 4096
 	Exit status: 0
 	Command being timed: "./allServices 10.35.0.229"
-	User time (seconds): 10.38
-	System time (seconds): 0.46
-	Percent of CPU this job got: 94%
-	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:11.51
+	User time (seconds): 9.72
+	System time (seconds): 0.43
+	Percent of CPU this job got: 95%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:10.69
 	Average shared text size (kbytes): 0
 	Average unshared data size (kbytes): 0
 	Average stack size (kbytes): 0
 	Average total size (kbytes): 0
-	Maximum resident set size (kbytes): 4600
+	Maximum resident set size (kbytes): 4620
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 485
+	Voluntary context switches: 1688
+	Involuntary context switches: 3101
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 8
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+	Command being timed: "./allServices 10.35.0.229"
+	User time (seconds): 14.47
+	System time (seconds): 0.44
+	Percent of CPU this job got: 96%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:15.50
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 4620
 	Average resident set size (kbytes): 0
 	Major (requiring I/O) page faults: 0
 	Minor (reclaiming a frame) page faults: 483
-	Voluntary context switches: 1262
-	Involuntary context switches: 1587
+	Voluntary context switches: 1188
+	Involuntary context switches: 1379
 	Swaps: 0
 	File system inputs: 0
-	File system outputs: 16
+	File system outputs: 8
 	Socket messages sent: 0
 	Socket messages received: 0
 	Signals delivered: 0
 	Page size (bytes): 4096
 	Exit status: 0
 	Command being timed: "./allServices 10.35.0.229"
-	User time (seconds): 10.17
-	System time (seconds): 0.55
+	User time (seconds): 10.79
+	System time (seconds): 0.37
 	Percent of CPU this job got: 93%
-	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:11.45
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:11.95
 	Average shared text size (kbytes): 0
 	Average unshared data size (kbytes): 0
 	Average stack size (kbytes): 0
 	Average total size (kbytes): 0
-	Maximum resident set size (kbytes): 4600
+	Maximum resident set size (kbytes): 4604
 	Average resident set size (kbytes): 0
 	Major (requiring I/O) page faults: 0
-	Minor (reclaiming a frame) page faults: 482
-	Voluntary context switches: 1694
-	Involuntary context switches: 1107
-	Swaps: 0
-	File system inputs: 0
-	File system outputs: 8
-	Socket messages sent: 0
-	Socket messages received: 0
-	Signals delivered: 0
-	Page size (bytes): 4096
-	Exit status: 0
-	Command being timed: "./allServices 10.35.0.229"
-	User time (seconds): 12.23
-	System time (seconds): 0.43
-	Percent of CPU this job got: 95%
-	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:13.20
-	Average shared text size (kbytes): 0
-	Average unshared data size (kbytes): 0
-	Average stack size (kbytes): 0
-	Average total size (kbytes): 0
-	Maximum resident set size (kbytes): 4556
-	Average resident set size (kbytes): 0
-	Major (requiring I/O) page faults: 0
-	Minor (reclaiming a frame) page faults: 482
-	Voluntary context switches: 1743
-	Involuntary context switches: 50
-	Swaps: 0
-	File system inputs: 0
-	File system outputs: 8
-	Socket messages sent: 0
-	Socket messages received: 0
-	Signals delivered: 0
-	Page size (bytes): 4096
-	Exit status: 0
-	Command being timed: "./allServices 10.35.0.229"
-	User time (seconds): 9.68
-	System time (seconds): 0.34
-	Percent of CPU this job got: 93%
-	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:10.71
-	Average shared text size (kbytes): 0
-	Average unshared data size (kbytes): 0
-	Average stack size (kbytes): 0
-	Average total size (kbytes): 0
-	Maximum resident set size (kbytes): 4556
-	Average resident set size (kbytes): 0
-	Major (requiring I/O) page faults: 0
-	Minor (reclaiming a frame) page faults: 484
-	Voluntary context switches: 1744
-	Involuntary context switches: 75
-	Swaps: 0
-	File system inputs: 0
-	File system outputs: 8
-	Socket messages sent: 0
-	Socket messages received: 0
-	Signals delivered: 0
-	Page size (bytes): 4096
-	Exit status: 0
-	Command being timed: "./allServices 10.35.0.229"
-	User time (seconds): 11.50
-	System time (seconds): 0.33
-	Percent of CPU this job got: 94%
-	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:12.56
-	Average shared text size (kbytes): 0
-	Average unshared data size (kbytes): 0
-	Average stack size (kbytes): 0
-	Average total size (kbytes): 0
-	Maximum resident set size (kbytes): 4600
-	Average resident set size (kbytes): 0
-	Major (requiring I/O) page faults: 0
-	Minor (reclaiming a frame) page faults: 482
-	Voluntary context switches: 1817
-	Involuntary context switches: 140
-	Swaps: 0
-	File system inputs: 0
-	File system outputs: 8
-	Socket messages sent: 0
-	Socket messages received: 0
-	Signals delivered: 0
-	Page size (bytes): 4096
-	Exit status: 0
-	Command being timed: "./allServices 10.35.0.229"
-	User time (seconds): 10.58
-	System time (seconds): 0.36
-	Percent of CPU this job got: 95%
-	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:11.41
-	Average shared text size (kbytes): 0
-	Average unshared data size (kbytes): 0
-	Average stack size (kbytes): 0
-	Average total size (kbytes): 0
-	Maximum resident set size (kbytes): 4616
-	Average resident set size (kbytes): 0
-	Major (requiring I/O) page faults: 0
-	Minor (reclaiming a frame) page faults: 481
-	Voluntary context switches: 1161
-	Involuntary context switches: 504
-	Swaps: 0
-	File system inputs: 0
-	File system outputs: 8
-	Socket messages sent: 0
-	Socket messages received: 0
-	Signals delivered: 0
-	Page size (bytes): 4096
-	Exit status: 0
-	Command being timed: "./allServices 10.35.0.229"
-	User time (seconds): 9.88
-	System time (seconds): 0.29
-	Percent of CPU this job got: 95%
-	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:10.68
-	Average shared text size (kbytes): 0
-	Average unshared data size (kbytes): 0
-	Average stack size (kbytes): 0
-	Average total size (kbytes): 0
-	Maximum resident set size (kbytes): 4616
-	Average resident set size (kbytes): 0
-	Major (requiring I/O) page faults: 0
-	Minor (reclaiming a frame) page faults: 481
-	Voluntary context switches: 1630
-	Involuntary context switches: 51
-	Swaps: 0
-	File system inputs: 0
-	File system outputs: 8
-	Socket messages sent: 0
-	Socket messages received: 0
-	Signals delivered: 0
-	Page size (bytes): 4096
-	Exit status: 0
-Command terminated by signal 2
-	Command being timed: "./allServices 10.35.0.229"
-	User time (seconds): 37.07
-	System time (seconds): 0.54
-	Percent of CPU this job got: 98%
-	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:38.38
-	Average shared text size (kbytes): 0
-	Average unshared data size (kbytes): 0
-	Average stack size (kbytes): 0
-	Average total size (kbytes): 0
-	Maximum resident set size (kbytes): 4516
-	Average resident set size (kbytes): 0
-	Major (requiring I/O) page faults: 0
-	Minor (reclaiming a frame) page faults: 479
-	Voluntary context switches: 425
-	Involuntary context switches: 2561
-	Swaps: 0
-	File system inputs: 0
-	File system outputs: 0
-	Socket messages sent: 0
-	Socket messages received: 0
-	Signals delivered: 0
-	Page size (bytes): 4096
-	Exit status: 0
-Command terminated by signal 6
-	Command being timed: "./allServices 10.35.0.229"
-	User time (seconds): 0.08
-	System time (seconds): 0.03
-	Percent of CPU this job got: 18%
-	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:00.61
-	Average shared text size (kbytes): 0
-	Average unshared data size (kbytes): 0
-	Average stack size (kbytes): 0
-	Average total size (kbytes): 0
-	Maximum resident set size (kbytes): 3224
-	Average resident set size (kbytes): 0
-	Major (requiring I/O) page faults: 0
-	Minor (reclaiming a frame) page faults: 194
-	Voluntary context switches: 53
-	Involuntary context switches: 10
+	Minor (reclaiming a frame) page faults: 483
+	Voluntary context switches: 1197
+	Involuntary context switches: 1070
 	Swaps: 0
 	File system inputs: 0
 	File system outputs: 0
@@ -231,10 +91,33 @@ Command terminated by signal 6
 	Page size (bytes): 4096
 	Exit status: 0
 	Command being timed: "./allServices 10.35.0.229"
-	User time (seconds): 9.75
-	System time (seconds): 0.29
-	Percent of CPU this job got: 93%
-	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:10.78
+	User time (seconds): 11.74
+	System time (seconds): 0.38
+	Percent of CPU this job got: 97%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:12.40
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 4592
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 482
+	Voluntary context switches: 1570
+	Involuntary context switches: 1194
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 8
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+	Command being timed: "./allServices 10.35.0.229"
+	User time (seconds): 11.47
+	System time (seconds): 0.40
+	Percent of CPU this job got: 96%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:12.27
 	Average shared text size (kbytes): 0
 	Average unshared data size (kbytes): 0
 	Average stack size (kbytes): 0
@@ -243,8 +126,31 @@ Command terminated by signal 6
 	Average resident set size (kbytes): 0
 	Major (requiring I/O) page faults: 0
 	Minor (reclaiming a frame) page faults: 484
-	Voluntary context switches: 1556
-	Involuntary context switches: 270
+	Voluntary context switches: 1729
+	Involuntary context switches: 950
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+	Command being timed: "./allServices 10.35.0.229"
+	User time (seconds): 11.00
+	System time (seconds): 0.28
+	Percent of CPU this job got: 93%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:12.06
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 4556
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 484
+	Voluntary context switches: 1622
+	Involuntary context switches: 162
 	Swaps: 0
 	File system inputs: 0
 	File system outputs: 8
@@ -254,20 +160,66 @@ Command terminated by signal 6
 	Page size (bytes): 4096
 	Exit status: 0
 	Command being timed: "./allServices 10.35.0.229"
-	User time (seconds): 12.34
-	System time (seconds): 0.40
-	Percent of CPU this job got: 95%
-	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:13.37
+	User time (seconds): 11.67
+	System time (seconds): 0.31
+	Percent of CPU this job got: 90%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:13.27
 	Average shared text size (kbytes): 0
 	Average unshared data size (kbytes): 0
 	Average stack size (kbytes): 0
 	Average total size (kbytes): 0
-	Maximum resident set size (kbytes): 4616
+	Maximum resident set size (kbytes): 4596
 	Average resident set size (kbytes): 0
 	Major (requiring I/O) page faults: 0
-	Minor (reclaiming a frame) page faults: 485
-	Voluntary context switches: 1624
-	Involuntary context switches: 3287
+	Minor (reclaiming a frame) page faults: 483
+	Voluntary context switches: 1216
+	Involuntary context switches: 464
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 0
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+	Command being timed: "./allServices 10.35.0.229"
+	User time (seconds): 10.80
+	System time (seconds): 0.44
+	Percent of CPU this job got: 94%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:11.88
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 4608
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 483
+	Voluntary context switches: 1662
+	Involuntary context switches: 990
+	Swaps: 0
+	File system inputs: 0
+	File system outputs: 8
+	Socket messages sent: 0
+	Socket messages received: 0
+	Signals delivered: 0
+	Page size (bytes): 4096
+	Exit status: 0
+	Command being timed: "./allServices 10.35.0.229"
+	User time (seconds): 10.19
+	System time (seconds): 0.41
+	Percent of CPU this job got: 95%
+	Elapsed (wall clock) time (h:mm:ss or m:ss): 0:11.10
+	Average shared text size (kbytes): 0
+	Average unshared data size (kbytes): 0
+	Average stack size (kbytes): 0
+	Average total size (kbytes): 0
+	Maximum resident set size (kbytes): 4592
+	Average resident set size (kbytes): 0
+	Major (requiring I/O) page faults: 0
+	Minor (reclaiming a frame) page faults: 482
+	Voluntary context switches: 1612
+	Involuntary context switches: 467
 	Swaps: 0
 	File system inputs: 0
 	File system outputs: 8
