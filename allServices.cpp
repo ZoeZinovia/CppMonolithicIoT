@@ -281,8 +281,7 @@ int main(int argc, char* argv[])
         dhtEnd = high_resolution_clock::now();
         dhtTimer = dhtEnd - dhtStart;
         if((temperature == 0 && humidity == 0) || dhtTimer > (std::chrono::seconds(1))) { //need to get values from
-            std::cout << "herllo";
-//            int *readings = read_dht11_dat();
+            int *readings = read_dht11_dat();
 //            dhtStart = high_resolution_clock::now();
 //            int counter = 0;
 //            while (readings[0] == -1 && counter < 5) {
