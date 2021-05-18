@@ -372,7 +372,7 @@ int main(int argc, char* argv[])
 
     std::ofstream outfile3;
     outfile3.open("piResultsCppMono.txt", std::ios_base::app); // append to the results text file
-    outfile3 << "Overall runtime = " << timer.count() << "Whya re you not printing?\n";
+    outfile3 << "Overall runtime = " << timer.count() << "\n";
     std::cout << "Overall runtime = " << timer.count() << "\n";
 
     return rc;
