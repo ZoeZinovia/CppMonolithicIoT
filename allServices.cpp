@@ -277,11 +277,15 @@ int main(int argc, char* argv[])
     auto dhtStart = high_resolution_clock::now();
     auto dhtEnd = high_resolution_clock::now();
     std::chrono::duration<double> dhtTimer;
+    std::cout << "got to point 1";
     while(count <= num_iterations) {
+        std::cout << "got to point 2";
         dhtEnd = high_resolution_clock::now();
         dhtTimer = dhtEnd - dhtStart;
         if((temperature == 0 && humidity == 0) || dhtTimer > (std::chrono::seconds(1))) { //need to get values from
+            std::cout << "got to point 3";
             int *readings = read_dht11_dat();
+            std::cout << "got to point 4";
             dhtStart = high_resolution_clock::now();
             int counter = 0;
             while (readings[0] == -1 && counter < 5) {
@@ -294,8 +298,10 @@ int main(int argc, char* argv[])
             }
             humidity = readings[0] + (readings[1] / 10);
             temperature = readings[2] + (readings[3] / 10);
+            std::cout << "got to point 5";
         }
         if(count == num_iterations){
+            std::cout << "got to point 6";
             rapidjson::Document document_done;
             document_done.SetObject();
             rapidjson::Document::AllocatorType& allocator1 = document_done.GetAllocator();
@@ -305,6 +311,7 @@ int main(int argc, char* argv[])
             rc = publish_message(pub_message_done, TOPIC_H, client);
         }
         else {
+            std::cout << "got to point 7";
             //Create JSON DOM document object for humidity
             rapidjson::Document document_humidity;
             document_humidity.SetObject();
