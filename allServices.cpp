@@ -201,7 +201,7 @@ int* read_dht11_dat()
 
 int main(int argc, char* argv[])
 {
-    std::cout << "got to point 0";
+
     std::string input = argv[1]; // IP address as command line argument to avoid hard coding
     input.append(":1883"); // Append MQTT port
     char char_input[input.length() + 1];
@@ -213,59 +213,59 @@ int main(int argc, char* argv[])
 
     // ------ PIR code ----- //
 
-//    auto start_pir = high_resolution_clock::now(); // Starting timer
-//
+    auto start_pir = high_resolution_clock::now(); // Starting timer
+
     MQTTClient client;
     MQTTClient_connectOptions conn_opts = MQTTClient_connectOptions_initializer;
-//    MQTTClient_create(&client, ADDRESS, CLIENTID_PIR, MQTTCLIENT_PERSISTENCE_NONE, NULL);
-//    conn_opts.keepAliveInterval = 20;
-//    conn_opts.cleansession = 1;
-//
-//    if ((rc = MQTTClient_connect(client, &conn_opts)) != MQTTCLIENT_SUCCESS){
-//        printf("Failed to connect, return code %d\n", rc);
-//        exit(EXIT_FAILURE);
-//    } else{
-//        printf("Connected to PIR. Result code %d\n", rc);
-//    }
-//
-//    pinMode(PIN_PIR, INPUT);
-//    bool motion = false;
+    MQTTClient_create(&client, ADDRESS, CLIENTID_PIR, MQTTCLIENT_PERSISTENCE_NONE, NULL);
+    conn_opts.keepAliveInterval = 20;
+    conn_opts.cleansession = 1;
+
+    if ((rc = MQTTClient_connect(client, &conn_opts)) != MQTTCLIENT_SUCCESS){
+        printf("Failed to connect, return code %d\n", rc);
+        exit(EXIT_FAILURE);
+    } else{
+        printf("Connected to PIR. Result code %d\n", rc);
+    }
+
+    pinMode(PIN_PIR, INPUT);
+    bool motion = false;
     int count = 0;
     int num_iterations = 10000;
-//    while(count <= num_iterations) {
-//        if(count == num_iterations){
-//            rapidjson::Document document_done;
-//            document_done.SetObject();
-//            rapidjson::Document::AllocatorType& allocator1 = document_done.GetAllocator();
-//            document_done.AddMember("Done", true, allocator1);
-//            std::string pub_message_done = json_to_string(document_done);
-//            rc = publish_message(pub_message_done, TOPIC_PIR, client);
-//        }
-//        else {
-//            motion = digitalRead(PIN_PIR);
-//            //Create JSON DOM document object for humidity
-//            rapidjson::Document document_pir;
-//            document_pir.SetObject();
-//            rapidjson::Document::AllocatorType &allocator2 = document_pir.GetAllocator();
-//            document_pir.AddMember("PIR", motion, allocator2);
-//            try {
-//                std::string pub_message_pir = json_to_string(document_pir);
-//                rc = publish_message(pub_message_pir, TOPIC_PIR, client);
-//            } catch (const std::exception &exc) {
-//                // catch anything thrown within try block that derives from std::exception
-//                std::cerr << exc.what();
-//            }
-//        }
-//        count = count + 1;
-//    }
+    while(count <= num_iterations) {
+        if(count == num_iterations){
+            rapidjson::Document document_done;
+            document_done.SetObject();
+            rapidjson::Document::AllocatorType& allocator1 = document_done.GetAllocator();
+            document_done.AddMember("Done", true, allocator1);
+            std::string pub_message_done = json_to_string(document_done);
+            rc = publish_message(pub_message_done, TOPIC_PIR, client);
+        }
+        else {
+            motion = digitalRead(PIN_PIR);
+            //Create JSON DOM document object for humidity
+            rapidjson::Document document_pir;
+            document_pir.SetObject();
+            rapidjson::Document::AllocatorType &allocator2 = document_pir.GetAllocator();
+            document_pir.AddMember("PIR", motion, allocator2);
+            try {
+                std::string pub_message_pir = json_to_string(document_pir);
+                rc = publish_message(pub_message_pir, TOPIC_PIR, client);
+            } catch (const std::exception &exc) {
+                // catch anything thrown within try block that derives from std::exception
+                std::cerr << exc.what();
+            }
+        }
+        count = count + 1;
+    }
 
-//    // End of PIR loop. Calculate runtime
-//    auto end_pir = high_resolution_clock::now();
-//    std::chrono::duration<double> timer_pir = end_pir-start_pir;
-//    std::ofstream outfile;
-//    outfile.open("piResultsCppMono.txt", std::ios_base::app); // append to the results text file
-//    outfile << "PIR publisher runtime = " << timer_pir.count() << "\n";
-//    std::cout << "PIR runtime = " << timer_pir.count() << "\n";
+    // End of PIR loop. Calculate runtime
+    auto end_pir = high_resolution_clock::now();
+    std::chrono::duration<double> timer_pir = end_pir-start_pir;
+    std::ofstream outfile;
+    outfile.open("piResultsCppMono.txt", std::ios_base::app); // append to the results text file
+    outfile << "PIR publisher runtime = " << timer_pir.count() << "\n";
+    std::cout << "PIR runtime = " << timer_pir.count() << "\n";
 
     // ------ Humidity temperature code ------ //
 
@@ -277,15 +277,11 @@ int main(int argc, char* argv[])
     auto dhtStart = high_resolution_clock::now();
     auto dhtEnd = high_resolution_clock::now();
     std::chrono::duration<double> dhtTimer;
-    std::cout << "got to point 1";
     while(count <= num_iterations) {
-        std::cout << "got to point 2";
         dhtEnd = high_resolution_clock::now();
         dhtTimer = dhtEnd - dhtStart;
         if((temperature == 0 && humidity == 0) || dhtTimer > (std::chrono::seconds(1))) { //need to get values from
-            std::cout << "got to point 3";
             int *readings = read_dht11_dat();
-            std::cout << "got to point 4";
             dhtStart = high_resolution_clock::now();
             int counter = 0;
             while (readings[0] == -1 && counter < 5) {
@@ -298,10 +294,8 @@ int main(int argc, char* argv[])
             }
             humidity = readings[0] + (readings[1] / 10);
             temperature = readings[2] + (readings[3] / 10);
-            std::cout << "got to point 5";
         }
         if(count == num_iterations){
-            std::cout << "got to point 6";
             rapidjson::Document document_done;
             document_done.SetObject();
             rapidjson::Document::AllocatorType& allocator1 = document_done.GetAllocator();
@@ -311,7 +305,6 @@ int main(int argc, char* argv[])
             rc = publish_message(pub_message_done, TOPIC_H, client);
         }
         else {
-            std::cout << "got to point 7";
             //Create JSON DOM document object for humidity
             rapidjson::Document document_humidity;
             document_humidity.SetObject();
@@ -332,7 +325,6 @@ int main(int argc, char* argv[])
                 rc = publish_message(pub_message_temperature, TOPIC_T, client);
             } catch (const std::exception &exc) {
                 // catch anything thrown within try block that derives from std::exception
-                std::cout << "internal problem";
                 std::cerr << exc.what();
             }
         }
@@ -342,42 +334,42 @@ int main(int argc, char* argv[])
     // End of loop. Calculate runtime
     auto end_HT = high_resolution_clock::now();
     std::chrono::duration<double> timer_HT = end_HT-start_HT;
-//    std::ofstream outfile2;
-//    outfile2.open("piResultsCppMono.txt", std::ios_base::app); // append to the results text file
-//    outfile2 << "Humidity and temperature publisher runtime = " << timer_HT.count() << "\n";
+    std::ofstream outfile2;
+    outfile2.open("piResultsCppMono.txt", std::ios_base::app); // append to the results text file
+    outfile2 << "Humidity and temperature publisher runtime = " << timer_HT.count() << "\n";
     std::cout << "Humidity and temperature runtime = " << timer_HT.count() << "\n";
 
-//    // ------ LED code ------ //
-//
-//    wiringPiSetup();
-//
-//    MQTTClient client_led;
-//    MQTTClient_create(&client_led, ADDRESS, CLIENTID_LED, MQTTCLIENT_PERSISTENCE_NONE, NULL);
-//
-//    MQTTClient_setCallbacks(client_led, NULL, connlost, msgarrvd, delivered);
-//
-//    if ((rc = MQTTClient_connect(client_led, &conn_opts)) != MQTTCLIENT_SUCCESS) //Unsuccessful connection
-//    {
-//        printf("Failed to connect, return code %d\n", rc);
-//        exit(EXIT_FAILURE);
-//    }
-//    else{ // Successful connection
-//        printf("Connected to led. Result code %d\n", rc);
-//    }
-//    MQTTClient_subscribe(client_led, TOPIC_LED, QOS);
-//
-//    while(session_status != "Done"){ // Continue listening for messages until end of session
-//        //Do nothing
-//    }
-//
-//    //MQTTClient_unsubscribe(client, TOPIC);
-//    MQTTClient_disconnect(client, 10000);
-//    MQTTClient_destroy(&client);
-//    MQTTClient_disconnect(client_led, 10000);
-//    MQTTClient_destroy(&client_led);
-////    MQTTClient_disconnect(client_ht, 10000);
-////    MQTTClient_destroy(&client_ht);
-//    digitalWrite(pin_LED, 0);
+    // ------ LED code ------ //
+
+    wiringPiSetup();
+
+    MQTTClient client_led;
+    MQTTClient_create(&client_led, ADDRESS, CLIENTID_LED, MQTTCLIENT_PERSISTENCE_NONE, NULL);
+
+    MQTTClient_setCallbacks(client_led, NULL, connlost, msgarrvd, delivered);
+
+    if ((rc = MQTTClient_connect(client_led, &conn_opts)) != MQTTCLIENT_SUCCESS) //Unsuccessful connection
+    {
+        printf("Failed to connect, return code %d\n", rc);
+        exit(EXIT_FAILURE);
+    }
+    else{ // Successful connection
+        printf("Connected to led. Result code %d\n", rc);
+    }
+    MQTTClient_subscribe(client_led, TOPIC_LED, QOS);
+
+    while(session_status != "Done"){ // Continue listening for messages until end of session
+        //Do nothing
+    }
+
+    //MQTTClient_unsubscribe(client, TOPIC);
+    MQTTClient_disconnect(client, 10000);
+    MQTTClient_destroy(&client);
+    MQTTClient_disconnect(client_led, 10000);
+    MQTTClient_destroy(&client_led);
+//    MQTTClient_disconnect(client_ht, 10000);
+//    MQTTClient_destroy(&client_ht);
+    digitalWrite(pin_LED, 0);
 
     return rc;
 }
