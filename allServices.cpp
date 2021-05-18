@@ -271,8 +271,8 @@ int main(int argc, char* argv[])
 
     auto start_HT = high_resolution_clock::now(); // Starting timer
 
-    double temperature = 0;
-    double humidity = 0;
+    double temperature = -1;
+    double humidity = -1;
     count = 0;
     auto dhtStart = high_resolution_clock::now();
     auto dhtEnd = high_resolution_clock::now();
@@ -291,19 +291,23 @@ int main(int argc, char* argv[])
         else {
             dhtEnd = high_resolution_clock::now();
             dhtTimer = dhtEnd - dhtStart;
-//            if((temperature == 0 && humidity == 0) || dhtTimer > (std::chrono::seconds(1))) { //need to get values from
-//                int *readings = read_dht11_dat();
-//                dhtStart = high_resolution_clock::now();
-////                int counter = 0;
-////            while (readings[0] == -1 && counter < 5) {
-////                readings = read_dht11_dat(); // Errors frequently occur when reading dht sensor. Keep reading until values are returned.
-////                counter = counter + 1;
-////            }
-//                if (readings[0] != -1) {
-//                    humidity = readings[0] + (readings[1] / 10);
-//                    temperature = readings[2] + (readings[3] / 10);
-//                }
+            if((temperature == -1 && humidity == -1) || dhtTimer > (std::chrono::seconds(1))) { //need to get values from
+                int *readings = read_dht11_dat();
+                dhtStart = high_resolution_clock::now();
+//                int counter = 0;
+//            while (readings[0] == -1 && counter < 5) {
+//                readings = read_dht11_dat(); // Errors frequently occur when reading dht sensor. Keep reading until values are returned.
+//                counter = counter + 1;
 //            }
+                if (readings[0] != -1) {
+                    humidity = readings[0] + (readings[1] / 10);
+                    temperature = readings[2] + (readings[3] / 10);
+                }
+                else{
+                    humidity = 0;
+                    temperature = 0;
+                }
+            }
             //Create JSON DOM document object for humidity
             rapidjson::Document document_humidity;
             document_humidity.SetObject();
