@@ -293,11 +293,11 @@ int main(int argc, char* argv[])
             if((temperature == -1 && humidity == -1) || dhtTimer > (std::chrono::seconds(1))) { //need to get values from
                 int *readings = read_dht11_dat();
                 dhtStart = high_resolution_clock::now();
-//                int counter = 0;
-//            while (readings[0] == -1 && counter < 5) {
-//                readings = read_dht11_dat(); // Errors frequently occur when reading dht sensor. Keep reading until values are returned.
-//                counter = counter + 1;
-//            }
+                int counter = 0;
+                while (readings[0] == -1 && counter < 5) {
+                    readings = read_dht11_dat(); // Errors frequently occur when reading dht sensor. Keep reading until values are returned.
+                    counter = counter + 1;
+                }
                 if (readings[0] != -1) {
                     humidity = readings[0] + (readings[1] / 10);
                     temperature = readings[2] + (readings[3] / 10);
