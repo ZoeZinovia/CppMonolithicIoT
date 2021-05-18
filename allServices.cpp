@@ -277,6 +277,7 @@ int main(int argc, char* argv[])
     auto dhtStart = high_resolution_clock::now();
     auto dhtEnd = high_resolution_clock::now();
     std::chrono::duration<double> dhtTimer;
+    num_iterations = 10;
     while(count <= num_iterations) {
         dhtEnd = high_resolution_clock::now();
         dhtTimer = dhtEnd - dhtStart;
