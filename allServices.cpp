@@ -325,6 +325,7 @@ int main(int argc, char* argv[])
                 rc = publish_message(pub_message_temperature, TOPIC_T, client);
             } catch (const std::exception &exc) {
                 // catch anything thrown within try block that derives from std::exception
+                std::cout << "internal problem";
                 std::cerr << exc.what();
             }
         }
