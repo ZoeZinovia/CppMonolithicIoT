@@ -267,16 +267,16 @@ int main(int argc, char* argv[])
     outfile << "PIR publisher runtime = " << timer_pir.count() << "\n";
     std::cout << "PIR runtime = " << timer_pir.count() << "\n";
 
-//    // ------ Humidity temperature code ------ //
-//
-//    auto start_HT = high_resolution_clock::now(); // Starting timer
-//
-//    double temperature = 0;
-//    double humidity = 0;
-//    count = 0;
-//    auto dhtStart = high_resolution_clock::now();
-//    auto dhtEnd = high_resolution_clock::now();
-//    std::chrono::duration<double> dhtTimer;
+    // ------ Humidity temperature code ------ //
+
+    auto start_HT = high_resolution_clock::now(); // Starting timer
+
+    double temperature = 0;
+    double humidity = 0;
+    count = 0;
+    auto dhtStart = high_resolution_clock::now();
+    auto dhtEnd = high_resolution_clock::now();
+    std::chrono::duration<double> dhtTimer;
 //    while(count <= num_iterations) {
 //        dhtEnd = high_resolution_clock::now();
 //        dhtTimer = dhtEnd - dhtStart;
@@ -331,13 +331,13 @@ int main(int argc, char* argv[])
 //        count = count + 1;
 //    }
 //
-//    // End of loop. Calculate runtime
-//    auto end_HT = high_resolution_clock::now();
-//    std::chrono::duration<double> timer_HT = end_HT-start_HT;
-//    std::ofstream outfile2;
-//    outfile2.open("piResultsCppMono.txt", std::ios_base::app); // append to the results text file
-//    outfile2 << "Humidity and temperature publisher runtime = " << timer_HT.count() << "\n";
-//    std::cout << "Humidity and temperature runtime = " << timer_HT.count() << "\n";
+    // End of loop. Calculate runtime
+    auto end_HT = high_resolution_clock::now();
+    std::chrono::duration<double> timer_HT = end_HT-start_HT;
+    std::ofstream outfile2;
+    outfile2.open("piResultsCppMono.txt", std::ios_base::app); // append to the results text file
+    outfile2 << "Humidity and temperature publisher runtime = " << timer_HT.count() << "\n";
+    std::cout << "Humidity and temperature runtime = " << timer_HT.count() << "\n";
 
     // ------ LED code ------ //
 
