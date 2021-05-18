@@ -215,8 +215,8 @@ int main(int argc, char* argv[])
 
 //    auto start_pir = high_resolution_clock::now(); // Starting timer
 //
-//    MQTTClient client;
-//    MQTTClient_connectOptions conn_opts = MQTTClient_connectOptions_initializer;
+    MQTTClient client;
+    MQTTClient_connectOptions conn_opts = MQTTClient_connectOptions_initializer;
 //    MQTTClient_create(&client, ADDRESS, CLIENTID_PIR, MQTTCLIENT_PERSISTENCE_NONE, NULL);
 //    conn_opts.keepAliveInterval = 20;
 //    conn_opts.cleansession = 1;
@@ -230,8 +230,8 @@ int main(int argc, char* argv[])
 //
 //    pinMode(PIN_PIR, INPUT);
 //    bool motion = false;
-//    int count = 0;
-//    int num_iterations = 10000;
+    int count = 0;
+    int num_iterations = 10000;
 //    while(count <= num_iterations) {
 //        if(count == num_iterations){
 //            rapidjson::Document document_done;
