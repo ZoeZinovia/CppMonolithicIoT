@@ -92,7 +92,7 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *m
         std::chrono::duration<double> timer = end_led-start_led;
         std::cout << "LED subscriber runtime = " << timer.count() << "\n";
         std::ofstream outfile;
-        outfile.open("piResultsCppMono.txt", std::ios_base::app); // append to the results text file
+        outfile.open("piResultsCppMonoLong.txt", std::ios_base::app); // append to the results text file
         outfile << "LED subscriber runtime = " << timer.count() << "\n";
         return 0;
     } else{
@@ -251,7 +251,7 @@ int main(int argc, char* argv[])
     pinMode(PIN_PIR, INPUT);
     bool motion = false;
     int count = 0;
-    int num_iterations = 10000;
+    int num_iterations = 1000000;
     while(count <= num_iterations) {
         if(count == num_iterations){
             rapidjson::Document document_done;
@@ -283,7 +283,7 @@ int main(int argc, char* argv[])
     auto end_pir = high_resolution_clock::now();
     std::chrono::duration<double> timer_pir = end_pir-start_pir;
     std::ofstream outfile;
-    outfile.open("piResultsCppMono.txt", std::ios_base::app); // append to the results text file
+    outfile.open("piResultsCppMonoLong.txt", std::ios_base::app); // append to the results text file
     outfile << "PIR publisher runtime = " << timer_pir.count() << "\n";
     std::cout << "PIR runtime = " << timer_pir.count() << "\n";
 
@@ -352,7 +352,7 @@ int main(int argc, char* argv[])
     auto end_HT = high_resolution_clock::now();
     std::chrono::duration<double> timer_HT = end_HT-start_HT;
     std::ofstream outfile2;
-    outfile2.open("piResultsCppMono.txt", std::ios_base::app); // append to the results text file
+    outfile2.open("piResultsCppMonoLong.txt", std::ios_base::app); // append to the results text file
     outfile2 << "Humidity and temperature publisher runtime = " << timer_HT.count() << "\n";
     std::cout << "Humidity and temperature runtime = " << timer_HT.count() << "\n";
 
@@ -371,7 +371,7 @@ int main(int argc, char* argv[])
     std::chrono::duration<double> timer = end-start;
 
     std::ofstream outfile3;
-    outfile3.open("piResultsCppMono.txt", std::ios_base::app); // append to the results text file
+    outfile3.open("piResultsCppMonoLong.txt", std::ios_base::app); // append to the results text file
     outfile3 << "Overall runtime = " << timer.count() << "\n";
     std::cout << "Overall runtime = " << timer.count() << "\n";
 
