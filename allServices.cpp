@@ -83,7 +83,7 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *m
     std::cout << len << "\n";
     if(len > 27){ //Fix for Paho MQTT bug
         int diff = len-27;
-        payloadptr[len-(diff - 1)] = '\0';
+        payloadptr[len-(diff)] = '\0';
     }
     std::cout << payloadptr << "\n";
     std::cout << "Here 7\n";
