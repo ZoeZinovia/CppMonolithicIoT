@@ -69,7 +69,6 @@ void delivered(void *context, MQTTClient_deliveryToken dt) // Required callback
 
 int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *message) // Callback function for when an MQTT message arrives from the broker
 {
-    std::cout << "Here 6\n";
     num_messages = num_messages + 1;
     if(num_messages == 1){
         start_led = high_resolution_clock::now(); // Starting timer
@@ -87,7 +86,6 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *m
         payloadptr[len-8] = '\0';
     }
     std::cout << payloadptr << "\n";
-    std::cout << "Here 7\n";
     rapidjson::Document document;
     document.Parse(payloadptr); // Parse string to JSON
     if(document.HasMember("Done")){ // Done message is received from publisher when communication ends. This triggers the end of the session and the end of the timer
@@ -103,7 +101,6 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *m
         return 0;
     } else{
         if(document.HasMember("LED_1")) { // If the message is about the LED status, the LED is switch accordingly
-            std::cout << "Here 8\n";
             led_status = (bool) document["LED_1"].GetBool();
             pin_LED = document["GPIO"].GetInt();
             pinMode(pin_LED, OUTPUT);
@@ -209,7 +206,6 @@ int* read_dht11_dat()
 
 int main(int argc, char* argv[])
 {
-    std::cout << "Here 1\n";
     auto start = high_resolution_clock::now();
 
     std::string input = argv[1]; // IP address as command line argument to avoid hard coding
@@ -238,10 +234,7 @@ int main(int argc, char* argv[])
         printf("Connected to led. Result code %d\n", rc);
     }
 
-    std::cout << "Here 1.5\n";
     MQTTClient_subscribe(client_led, TOPIC_LED, QOS);
-
-    std::cout << "Here 2\n";
 
     // ------ PIR code ----- //
 
@@ -258,8 +251,6 @@ int main(int argc, char* argv[])
     } else{
         printf("Connected to PIR. Result code %d\n", rc);
     }
-
-    std::cout << "Here 3\n";
 
     pinMode(PIN_PIR, INPUT);
     bool motion = false;
@@ -303,8 +294,6 @@ int main(int argc, char* argv[])
     // ------ Humidity temperature code ------ //
 
     auto start_HT = high_resolution_clock::now(); // Starting timer
-
-    std::cout << "Here 4\n";
 
     double temperature = -1;
     double humidity = -1;
