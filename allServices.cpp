@@ -83,6 +83,7 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *m
     if(payloadptr[len-2] == '}'){ // Fix for a bug in RapidJson
         payloadptr[len-1] = '\0';
     } else if(payloadptr[len-1] == '?'){ // Fix for a bug in RapidJson
+            std::cout << "true"\n";
             payloadptr[len-8] = '\0';
     }
     std::cout << payloadptr << "\n";
