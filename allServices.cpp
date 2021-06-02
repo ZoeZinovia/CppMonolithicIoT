@@ -69,6 +69,7 @@ void delivered(void *context, MQTTClient_deliveryToken dt) // Required callback
 
 int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *message) // Callback function for when an MQTT message arrives from the broker
 {
+    std::cout << "Here 6\n";
     num_messages = num_messages + 1;
     if(num_messages == 1){
         start_led = high_resolution_clock::now(); // Starting timer
@@ -82,6 +83,7 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *m
         payloadptr[len-1] = '\0';
     }
 
+    std::cout << "Here 7\n";
     rapidjson::Document document;
     document.Parse(payloadptr); // Parse string to JSON
     if(document.HasMember("Done")){ // Done message is received from publisher when communication ends. This triggers the end of the session and the end of the timer
@@ -97,6 +99,7 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *m
         return 0;
     } else{
         if(document.HasMember("LED_1")) { // If the message is about the LED status, the LED is switch accordingly
+            std::cout << "Here 8\n";
             led_status = (bool) document["LED_1"].GetBool();
             pin_LED = document["GPIO"].GetInt();
             pinMode(pin_LED, OUTPUT);
