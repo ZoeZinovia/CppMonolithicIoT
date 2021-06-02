@@ -78,6 +78,7 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *m
     char* payloadptr; //payload
 
     payloadptr = (char*)message->payload; //payload converted to char*
+    std::cout << payloadptr\n";
     int len = strlen(payloadptr);
     if(payloadptr[len-2] == '}'){ // Fix for a bug in RapidJson
         payloadptr[len-1] = '\0';
@@ -104,6 +105,7 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *m
             pin_LED = document["GPIO"].GetInt();
             pinMode(pin_LED, OUTPUT);
             digitalWrite(pin_LED, led_status);
+            std::cout << "Changed to: "<< led_status << "\n";
         }
         MQTTClient_freeMessage(&message);
         MQTTClient_free(topicName);
