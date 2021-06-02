@@ -75,17 +75,13 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *m
     }
     int i;
     char* payloadptr; //payload
-
     payloadptr = (char*)message->payload; //payload converted to char*
-    std::cout << payloadptr << "\n";
     int len = strlen(payloadptr);
-    std::cout << len << "\n";
     if(payloadptr[len-2] == '}'){ //Fix for Paho MQTT bug
         payloadptr[len-1] = '\0';
     } else if (len > 28){
         payloadptr[len-8] = '\0';
     }
-    std::cout << payloadptr << "\n";
     rapidjson::Document document;
     document.Parse(payloadptr); // Parse string to JSON
     if(document.HasMember("Done")){ // Done message is received from publisher when communication ends. This triggers the end of the session and the end of the timer
@@ -105,7 +101,6 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *m
             pin_LED = document["GPIO"].GetInt();
             pinMode(pin_LED, OUTPUT);
             digitalWrite(pin_LED, led_status);
-            std::cout << "Changed to: "<< led_status << "\n";
         }
         MQTTClient_freeMessage(&message);
         MQTTClient_free(topicName);
