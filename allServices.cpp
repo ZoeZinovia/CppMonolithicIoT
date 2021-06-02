@@ -84,8 +84,8 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *m
     if(payloadptr[len-2] == '}'){ //Fix for Paho MQTT bug
         payloadptr[len-1] = '\0';
     } else if (len > 28){
-        int pos = getposition(payloadptr, ':');
-        payloadptr[pos + 4] = '\0';
+        std::size_t found = payloadptr.find(":");
+        payloadptr[len-8] = '\0';
     }
     std::cout << payloadptr << "\n";
     std::cout << "Here 7\n";
