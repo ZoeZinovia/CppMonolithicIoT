@@ -150,6 +150,8 @@ int* read_dht11_dat()
 
     dht11_dat[0] = dht11_dat[1] = dht11_dat[2] = dht11_dat[3] = dht11_dat[4] = 0;
 
+    std::out << "Here\n"
+
     // pull pin down for 18 milliseconds. This is called “Start Signal” and it is to ensure DHT11 has detected the signal from MCU.
     pinMode( DHTPIN, OUTPUT );
     digitalWrite( DHTPIN, LOW );
