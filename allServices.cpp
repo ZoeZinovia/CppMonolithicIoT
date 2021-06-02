@@ -81,11 +81,9 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *m
     std::cout << payloadptr << "\n";
     int len = strlen(payloadptr);
     std::cout << len << "\n";
-    if(payloadptr[len-2] == '}'){ // Fix for a bug in RapidJson
-        payloadptr[len-1] = '\0';
-    } else if(payloadptr[len-1] == '?'){ // Fix for a bug in RapidJson
-            std::cout << "true\n";
-            payloadptr[len-8] = '\0';
+    if(len > 27){ //Fix for Paho MQTT bug
+        int diff = len-27;
+        payloadptr[len-(diff - 1)] = '\0';
     }
     std::cout << payloadptr << "\n";
     std::cout << "Here 7\n";
