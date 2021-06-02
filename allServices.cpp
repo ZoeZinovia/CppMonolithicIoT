@@ -150,8 +150,6 @@ int* read_dht11_dat()
 
     dht11_dat[0] = dht11_dat[1] = dht11_dat[2] = dht11_dat[3] = dht11_dat[4] = 0;
 
-    std::out << "Here\n"
-
     // pull pin down for 18 milliseconds. This is called “Start Signal” and it is to ensure DHT11 has detected the signal from MCU.
     pinMode( DHTPIN, OUTPUT );
     digitalWrite( DHTPIN, LOW );
@@ -203,6 +201,7 @@ int* read_dht11_dat()
 
 int main(int argc, char* argv[])
 {
+    std::cout << "Here 1\n";
     auto start = high_resolution_clock::now();
 
     std::string input = argv[1]; // IP address as command line argument to avoid hard coding
@@ -211,8 +210,6 @@ int main(int argc, char* argv[])
     strcpy(char_input, input.c_str());
     ADDRESS = char_input;
     int rc;
-
-//    wiringPiSetup(); // Required for wiringPi
 
     // ------ LED code ------ //
 
@@ -232,7 +229,11 @@ int main(int argc, char* argv[])
     else{ // Successful connection
         printf("Connected to led. Result code %d\n", rc);
     }
+
+    std::cout << "Here 1.5\n";
     MQTTClient_subscribe(client_led, TOPIC_LED, QOS);
+
+    std::cout << "Here 2\n";
 
     // ------ PIR code ----- //
 
@@ -249,6 +250,8 @@ int main(int argc, char* argv[])
     } else{
         printf("Connected to PIR. Result code %d\n", rc);
     }
+
+    std::cout << "Here 3\n";
 
     pinMode(PIN_PIR, INPUT);
     bool motion = false;
@@ -292,6 +295,8 @@ int main(int argc, char* argv[])
     // ------ Humidity temperature code ------ //
 
     auto start_HT = high_resolution_clock::now(); // Starting timer
+
+    std::cout << "Here 4\n";
 
     double temperature = -1;
     double humidity = -1;
