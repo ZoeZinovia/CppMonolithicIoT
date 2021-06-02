@@ -85,7 +85,7 @@ int msgarrvd(void *context, char *topicName, int topicLen, MQTTClient_message *m
     } else if(payloadptr[len-1] == '?'){ // Fix for a bug in RapidJson
             payloadptr[len-8] = '\0';
     }
-
+    std::cout << payloadptr << "\n";
     std::cout << "Here 7\n";
     rapidjson::Document document;
     document.Parse(payloadptr); // Parse string to JSON
